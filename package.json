@@ -9,12 +9,33 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "12.2.2",
+    "@ceramicnetwork/blockchain-utils-linking": "^2.0.4",
+    "@ceramicnetwork/http-client": "^2.0.4",
+    "@glazed/did-datastore": "^0.3.1",
+    "@glazed/did-session": "^0.0.1",
+    "@mantine/core": "^4.2.9",
+    "@mantine/dates": "^4.2.9",
+    "@mantine/dropzone": "^4.2.12",
+    "@mantine/form": "^4.2.10",
+    "@mantine/hooks": "^4.2.9",
+    "@mantine/next": "^4.2.9",
+    "@mantine/notifications": "^4.2.9",
+    "@mantine/rte": "^4.2.11",
+    "@rainbow-me/rainbowkit": "^0.3.1",
+    "dayjs": "^1.11.3",
+    "dids": "^3.2.0",
+    "ethers": "^5.6.8",
+    "key-did-provider-ed25519": "^2.0.0",
+    "key-did-resolver": "^2.0.4",
+    "lit-ceramic-sdk": "^1.1.13",
+    "next": "12.1.6",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "tabler-icons-react": "^1.49.0",
+    "wagmi": "^0.4.12"
   },
   "devDependencies": {
-    "eslint": "8.19.0",
-    "eslint-config-next": "12.2.2"
+    "eslint": "8.17.0",
+    "eslint-config-next": "12.1.6"
   }
 }

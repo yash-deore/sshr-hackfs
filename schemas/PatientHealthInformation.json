@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PatientHealthInformation",
+  "type": "object",
+  "properties": {
+    "allergies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Allergies of the Patient"
+    },
+    "currentMedications": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Current Medications the Patient is taking"
+    },
+    "symptoms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Symptoms of the Patient"
+    },
+    "progressNotes": {
+      "type": "string",
+      "description": "Progress Notes of the Patient"
+    },
+    "vitalSigns": {
+      "type": "object",
+      "properties": {
+        "weight": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        },
+        "temperature": {
+          "type": "number"
+        },
+        "respiratoryRate": {
+          "type": "number"
+        },
+        "heartRate": {
+          "type": "number"
+        },
+        "bloodPressure": {
+          "type": "object",
+          "properties": {
+            "position": {
+              "type": "string"
+            },
+            "measurement": {
+              "type": "object",
+              "properties": {
+                "systolic": {
+                  "type": "number"
+                },
+                "diastolic": {
+                  "type": "number"
+                }
+              },
+              "description": "Systolic and Diastolic values of the Blood Pressure"
+            }
+          }
+        }
+      },
+      "description": "Vital Signs of the Patient"
+    }
+  }
+}
