@@ -119,8 +119,8 @@ export default function PatientForm() {
         bloodPressurePosition === null ? "" : bloodPressurePosition
       }`,
       measurement: {
-        systolic: systolicBloodPressure,
-        diastolic: diastolicBloodPressure,
+        systolic: systolicBloodPressure === "" ? 0 : systolicBloodPressure,
+        diastolic: diastolicBloodPressure === "" ? 0 : diastolicBloodPressure,
       },
     };
 
@@ -143,8 +143,6 @@ export default function PatientForm() {
       vitalSigns,
     };
 
-    console.log("all", all);
-
     try {
       await auth();
       await dataStore.set("patientBasicInformation", patientBasicInfo);
@@ -165,6 +163,8 @@ export default function PatientForm() {
         icon: <Check />,
         autoClose: 3000,
       });
+
+      router.push("/profile", null, { shallow: true });
     } catch (err) {
       console.log(err);
       showNotification({
@@ -285,7 +285,7 @@ export default function PatientForm() {
     }
   }, []);
 
-  if (globalStore.patientMedical !== null)
+  if (globalStore.patientMedical !== null) {
     return (
       <div style={{ margin: "0 5%" }}>
         <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
@@ -499,4 +499,213 @@ export default function PatientForm() {
         </form>
       </div>
     );
+  } else {
+    return (
+      <div style={{ margin: "0 5%" }}>
+        <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+          <Title style={{ margin: "3% 0 1% 0" }} order={2}>
+            Basic Information
+          </Title>
+
+          <TextInput
+            required
+            label="Name"
+            placeholder="Your Full Name"
+            classNames={classes}
+            {...form.getInputProps("name")}
+          />
+
+          <Select
+            required
+            style={{ marginTop: 20, zIndex: 2 }}
+            data={["Male", "Female", "Transgender"]}
+            placeholder="Select your gender"
+            label="Gender"
+            classNames={classes}
+            {...form.getInputProps("gender")}
+          />
+
+          <DatePicker
+            required
+            dropdownType="modal"
+            style={{ marginTop: 20 }}
+            label="Date of Birth"
+            placeholder="Select your date of birth"
+            classNames={classes}
+            clearable={false}
+            {...form.getInputProps("dateOfBirth")}
+          />
+
+          <Select
+            required
+            style={{ marginTop: 20, zIndex: 2 }}
+            data={["Single", "Married", "Divorced"]}
+            placeholder="Select your Marital Status"
+            label="Marital status"
+            classNames={classes}
+            {...form.getInputProps("maritalStatus")}
+          />
+
+          <Title style={{ margin: "3% 0 1% 0" }} order={2}>
+            Private Information
+          </Title>
+
+          <SimpleGrid
+            cols={2}
+            breakpoints={[{ maxWidth: "sm", cols: 1, margin: "50px" }]}
+          >
+            <NumberInput
+              required
+              label="Country Code"
+              placeholder="Your Country Code"
+              classNames={classes}
+              {...form.getInputProps("countryCode")}
+            />
+
+            <NumberInput
+              required
+              label="Phone Number"
+              placeholder="Your Phone Number"
+              classNames={classes}
+              {...form.getInputProps("phoneNumber")}
+            />
+          </SimpleGrid>
+          <br />
+          <TextInput
+            required
+            label="Email Id"
+            placeholder="Your Email Id"
+            classNames={classes}
+            {...form.getInputProps("emailAddress")}
+          />
+
+          <Title style={{ margin: "3% 0 1% 0" }} order={2}>
+            Medical Information
+          </Title>
+
+          <NumberInput
+            required
+            label="Weight (kg)"
+            placeholder="Your Weight"
+            classNames={classes}
+            {...form.getInputProps("weight")}
+          />
+          <br />
+
+          <NumberInput
+            required
+            label="Height (cm)"
+            placeholder="Your Height"
+            classNames={classes}
+            {...form.getInputProps("height")}
+          />
+          <br />
+
+          <NumberInput
+            required
+            label="Temperature (Celsius)"
+            placeholder="Your Body Temperature"
+            classNames={classes}
+            {...form.getInputProps("temperature")}
+          />
+          <br />
+
+          <NumberInput
+            label="Respiratory Rate (per min)"
+            placeholder="Your Respiratory Rate"
+            classNames={classes}
+            value={respiratoryRate}
+            onChange={(val) => setRespiratoryRate(val)}
+          />
+          <br />
+
+          <NumberInput
+            label="Heart Rate (bpm)"
+            placeholder="Your Heart Rate"
+            classNames={classes}
+            value={heartRate}
+            onChange={(val) => setHeartRate(val)}
+          />
+          <br />
+
+          <MultiSelect
+            label="Allergies"
+            data={allergies}
+            value={allergies}
+            onChange={setAllergies}
+            placeholder="Select Allergies"
+            searchable
+            creatable
+            clearable
+            getCreateLabel={(query) => `+ Create ${query}`}
+          />
+          <br />
+
+          <MultiSelect
+            label="Current Medications"
+            data={currentMedications}
+            value={currentMedications}
+            onChange={setCurrentMedications}
+            placeholder="Select Current Medications"
+            searchable
+            creatable
+            getCreateLabel={(query) => `+ Create ${query}`}
+          />
+          <br />
+
+          <MultiSelect
+            label="Symptoms"
+            data={symptoms}
+            value={symptoms}
+            onChange={setSymptoms}
+            placeholder="Select Symptoms"
+            searchable
+            creatable
+            clearable
+            getCreateLabel={(query) => `+ Create ${query}`}
+          />
+
+          <Select
+            style={{ marginTop: 20, zIndex: 2 }}
+            data={["Sitting", "Supine", "Standing"]}
+            clearable
+            placeholder="Select your Blood Pressure measuring position"
+            label="Blood Pressure Measuring Position"
+            classNames={classes}
+            {...form.getInputProps("bloodPressurePosition")}
+          />
+          <br />
+
+          <SimpleGrid
+            cols={2}
+            breakpoints={[{ maxWidth: "sm", cols: 1, margin: "50px" }]}
+          >
+            <NumberInput
+              label="Systolic Blood Pressure (mmHg)"
+              placeholder="Systolic Blood Pressure"
+              classNames={classes}
+              {...form.getInputProps("systolicBloodPressure")}
+            />
+
+            <NumberInput
+              label="Diastolic Blood Pressure (mmHg)"
+              placeholder="Diastolic Blood Pressure"
+              classNames={classes}
+              {...form.getInputProps("diastolicBloodPressure")}
+            />
+          </SimpleGrid>
+
+          <Title style={{ margin: "3% 0 1% 0" }} order={2}>
+            Progress Notes
+          </Title>
+
+          <RichTextEditor onChange={setProgressNotes} />
+
+          <Button type="submit" size="lg" fullWidth style={{ margin: "2% 0" }}>
+            Save
+          </Button>
+        </form>
+      </div>
+    );
+  }
 }
