@@ -50,7 +50,7 @@ export function EncryptedAccordion({ encryptedResponse }) {
   const { classes } = useStyles();
 
   function linkShare() {
-    const link = "https://sshr.vercel.app/retrieve/" + encryptedResponse;
+    const link = "https://sshr-hackfs.vercel.app/retrieve/" + encryptedResponse;
     if (encryptedResponse.length > 0) {
       return (
         <Accordion.Item label="Share Link">

@@ -129,6 +129,10 @@ export default function DecryptStreamLink() {
               out of it. So check if the Stream Id is correct.
             </Accordion.Item>
           </Accordion>
+
+          <Title order={3} align="center" className={classes.title}>
+            Please try Reloading if facing an error.
+          </Title>
         </Container>
       );
     }
