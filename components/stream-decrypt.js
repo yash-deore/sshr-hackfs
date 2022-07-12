@@ -4,7 +4,7 @@ import { useForm } from "@mantine/form";
 import { Integration } from "lit-ceramic-sdk";
 import { DecryptedResponse } from "./decrypted-response";
 import { DecryptedAccordianDisplay } from "./decrypted-accordion";
-import { showNotification } from "@mantine/notifications";
+import { showNotification, updateNotification } from "@mantine/notifications";
 import { AlertCircle, Check } from "tabler-icons-react";
 
 let litCeramicIntegration = new Integration(
@@ -24,12 +24,22 @@ export default function StreamDecrypt() {
   async function handleDecrypt(e) {
     e.preventDefault();
 
+    showNotification({
+      id: "load-data-decrypt",
+      loading: true,
+      title: "Decrypting Patient data",
+      message: "Please wait. Do not reload or leave the page.",
+      autoClose: false,
+      disallowClose: true,
+    });
+
     litCeramicIntegration
       .readAndDecrypt(form.values.streamId)
       .then((value) => {
         console.log("Decrypted String ==>> ", value);
         if (value === "FALSE")
-          showNotification({
+          updateNotification({
+            id: "load-data-decrypt",
             color: "red",
             title: "Access Denied",
             message: "You don't have access to the data.",
@@ -39,7 +49,8 @@ export default function StreamDecrypt() {
           });
         else {
           setDecryptedResponse(value);
-          showNotification({
+          updateNotification({
+            id: "load-data-decrypt",
             color: "teal",
             title: "Access Granted",
             message: "Data retrieved successfully.",
@@ -50,7 +61,8 @@ export default function StreamDecrypt() {
       })
       .catch((err) => {
         console.log(err);
-        showNotification({
+        updateNotification({
+          id: "load-data-decrypt",
           color: "red",
           title: "Data Retrieval Unsuccessful",
           message: "Unable to retrieve your data. Please try again.",

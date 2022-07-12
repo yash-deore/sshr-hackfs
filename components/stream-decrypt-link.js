@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Integration } from "lit-ceramic-sdk";
-import { showNotification } from "@mantine/notifications";
+import { showNotification, updateNotification } from "@mantine/notifications";
 import { AlertCircle, Check } from "tabler-icons-react";
 import { DecryptedAccordianDisplay } from "./decrypted-accordion";
 import { Accordion, Container, createStyles, Title } from "@mantine/core";
@@ -71,7 +71,8 @@ export default function DecryptStreamLink() {
       .then((value) => {
         console.log("Decrypted String ==>> ", value);
         if (value === "FALSE")
-          showNotification({
+          updateNotification({
+            id: "load-data-decrypt-link",
             color: "red",
             title: "Access Denied",
             message: "You don't have access to the data.",
@@ -81,7 +82,8 @@ export default function DecryptStreamLink() {
           });
         else {
           setDecryptedResponse(value);
-          showNotification({
+          updateNotification({
+            id: "load-data-decrypt-link",
             color: "teal",
             title: "Access Granted",
             message: "Data retrieved successfully.",
@@ -92,7 +94,8 @@ export default function DecryptStreamLink() {
       })
       .catch((err) => {
         console.log(err);
-        showNotification({
+        updateNotification({
+          id: "load-data-decrypt-link",
           color: "red",
           title: "Data Retrieval Unsuccessful",
           message: "Unable to retrieve your data. Please try again.",
@@ -139,6 +142,15 @@ export default function DecryptStreamLink() {
   }
 
   useEffect(() => {
+    showNotification({
+      id: "load-data-decrypt-link",
+      loading: true,
+      title: "Decrypting Patient data",
+      message: "Please wait. Do not reload or leave the page.",
+      autoClose: false,
+      disallowClose: true,
+    });
+
     litCeramicIntegration.startLitClient(window);
 
     decryptStream();

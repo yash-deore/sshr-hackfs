@@ -4,7 +4,7 @@ import { useForm } from "@mantine/hooks";
 import { Integration } from "lit-ceramic-sdk";
 import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
-import { showNotification } from "@mantine/notifications";
+import { showNotification, updateNotification } from "@mantine/notifications";
 import { Check, AlertCircle } from "tabler-icons-react";
 
 import { useGlobalContext } from "../global/store";
@@ -37,6 +37,15 @@ export default function StreamEncrypt() {
 
   async function handleShare(e) {
     e.preventDefault();
+
+    showNotification({
+      id: "load-data-encrypt",
+      loading: true,
+      title: "Encrypting Patient data",
+      message: "Please wait. Do not reload or leave the page.",
+      autoClose: false,
+      disallowClose: true,
+    });
 
     if (ethers.utils.isAddress(form.values.address)) {
       const accessControlConditions = accessControlArray(
@@ -71,7 +80,8 @@ export default function StreamEncrypt() {
       setEncryptedStreamId(response);
 
       if (response.startsWith("something"))
-        showNotification({
+        updateNotification({
+          id: "load-data-encrypt",
           color: "red",
           title: "Data Encryption Unsuccessful",
           message: "Unable to Encrypt your data. Please try again.",
@@ -79,7 +89,8 @@ export default function StreamEncrypt() {
           autoClose: 3000,
         });
       else
-        showNotification({
+        updateNotification({
+          id: "load-data-encrypt",
           color: "teal",
           title: "Patient Data encrypted successfully",
           message: "You can share your Stream Id with your doctor now",
@@ -87,7 +98,8 @@ export default function StreamEncrypt() {
           autoClose: 6000,
         });
     } else {
-      showNotification({
+      updateNotification({
+        id: "load-data-encrypt",
         color: "red",
         title: "Enter a Valid Ethereum Address",
         message: "Invalid Doctor's Address. Please try again.",

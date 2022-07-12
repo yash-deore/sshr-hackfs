@@ -16,11 +16,10 @@ import { ceramic, aliases } from "../constants";
 import { auth } from "../functions/authenticate";
 import { DIDDataStore } from "@glazed/did-datastore";
 import { useRouter } from "next/router";
-import { showNotification } from "@mantine/notifications";
+import { showNotification, updateNotification } from "@mantine/notifications";
 import { authenticateAndGetData } from "../functions/authenticateAndGetData";
 import { AlertCircle, Check } from "tabler-icons-react";
 import RichTextEditor from "./rich-text-editor";
-import { DropzoneButton } from "./file-upload-dropzone";
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -83,6 +82,16 @@ export default function PatientForm() {
   });
 
   const handleSubmit = async (values) => {
+    showNotification({
+      id: "load-data-edit",
+      loading: true,
+      title: "Saving Patient Information",
+      message:
+        "Please wait your data is being saved. Do not reload or leave the page.",
+      autoClose: false,
+      disallowClose: true,
+    });
+
     const {
       name,
       gender,
@@ -156,7 +165,8 @@ export default function PatientForm() {
         patientMedical: patientMedicalInfo,
       });
 
-      showNotification({
+      updateNotification({
+        id: "load-data-edit",
         color: "teal",
         title: "Data Edited Successfully",
         message: "Patient's information updated",
@@ -167,7 +177,8 @@ export default function PatientForm() {
       router.push("/profile", null, { shallow: true });
     } catch (err) {
       console.log(err);
-      showNotification({
+      updateNotification({
+        id: "load-data-edit",
         color: "red",
         title: "Error while editing",
         message: "Patient's information not updated. Please try again.",
