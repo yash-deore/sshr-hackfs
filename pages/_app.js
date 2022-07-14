@@ -17,7 +17,7 @@ import { AppHeader } from "../components/app-header";
 import { GlobalContextProvider } from "../global/store";
 
 const { chains, provider } = configureChains(
-  [chain.mainnet],
+  [chain.mainnet, chain.polygon, chain.polygonMumbai],
   [publicProvider()]
 );
 
