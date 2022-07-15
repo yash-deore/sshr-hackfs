@@ -4,7 +4,6 @@ import { NotificationsProvider } from "@mantine/notifications";
 
 import "@rainbow-me/rainbowkit/styles.css";
 import {
-  getDefaultWallets,
   RainbowKitProvider,
   midnightTheme,
   lightTheme,
@@ -12,7 +11,6 @@ import {
   wallet,
 } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
-// import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 
 import { AppHeader } from "../components/app-header";
@@ -20,16 +18,8 @@ import { GlobalContextProvider } from "../global/store";
 
 const { chains, provider } = configureChains(
   [chain.mainnet, chain.polygon, chain.polygonMumbai],
-  [
-    // alchemyProvider({ alchemyId: process.env.ALCHEMY_ID }),
-    publicProvider(),
-  ]
+  [publicProvider()]
 );
-
-// const { connectors } = getDefaultWallets({
-//   appName: "SSHR",
-//   chains,
-// });
 
 const connectors = connectorsForWallets([
   {
