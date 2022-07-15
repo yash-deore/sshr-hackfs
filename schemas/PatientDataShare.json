@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PatientDataShare",
+  "type": "object",
+  "properties": {
+    "shares": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "streamId": {
+            "type": "string"
+          },
+          "doctorAddress": {
+            "type": "string"
+          }
+        },
+        "description": "Details of the information share made by the Patient"
+      },
+      "description": "List of the information shares made by the Patient"
+    }
+  }
+}
