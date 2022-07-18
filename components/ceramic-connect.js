@@ -63,17 +63,10 @@ export function CeramicConnect() {
   function DisplayPatient() {
     const { authenticated, patientBasic, patientPersonal, patientMedical } =
       globalStore;
-    // console.log("DisplayPatient ==>> ", patientMedical);
     if (authenticated) {
       if (patientBasic === null || patientPersonal === null)
         return <NewPatient />;
       else {
-        console.log(
-          "displayPat",
-          patientBasic,
-          patientPersonal,
-          patientMedical
-        );
         const { name, gender, dateOfBirth, maritalStatus } = patientBasic;
         const { countryCode, phoneNumber, emailAddress } = patientPersonal;
         const {
@@ -86,14 +79,6 @@ export function CeramicConnect() {
         const completePhoneNumber = countryCode + " " + phoneNumber;
         const dateConversion = new Date(dateOfBirth);
         const convertedDateOfBirth = dateConversion.toString().substring(4, 15);
-
-        console.log(
-          allergies,
-          currentMedications,
-          symptoms,
-          progressNotes,
-          vitalSigns
-        );
 
         return (
           <PatientInformation
@@ -133,7 +118,6 @@ export function CeramicConnect() {
         <div className={classes.controls}>{CeramiConnectButton()}</div>
 
         {DisplayPatient()}
-        {/* <div>{DisplayPatientInformation()}</div> */}
       </div>
     );
   }
