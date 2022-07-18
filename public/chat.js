@@ -3,22 +3,18 @@
     window.XMTPIntegration = {options: {}};
     var defaultOptions = {
         iframeUrl: null,
-        clientUserId: encodeURIComponent('UNIQUE_ID_FOR_YOUR_USER'),
-        clientUser: null,
         publicApiKey: 'CLIENT_ID',
         fullscreen: true,
         showButton: false,
-        defaultState: 'import',
         hideMenu: true,
         sideBarWidth: "800px",
         floatingActionButtonRightOffset: "15px",
         floatingActionButtonBottomOffset: "15px",
-        clientServerFinishUrl: "https://yourserver.com/api/v1/finish",
-        finish: function(sessionTokenObject) {
-            console.info('You have not defined window.XMTPIntegration.options.finish!');
+        finish: function() {
+            /* (optional) Called when a user closes the popup */
         },
         close: function() {
-            /* (optional) Called when a user closes the popup without connecting any data sources */
+            /* (optional) Called when a user closes the popup */
         },
         error: function(err) {
             console.error(err);
@@ -195,12 +191,9 @@
         if(!iframeUrl){
             iframeUrl = 'https://xmtp.humanfs.io/dm/'
                 + getRecipientAddress()+'/?message=' + getMessage() +  '&publicApiKey=' + getPublicApiKey();
-            if(window.XMTPIntegration.options.hideMenu){url += '&hideMenu=' + window.XMTPIntegration.options.hideMenu;}
+            if(window.XMTPIntegration.options.hideMenu){iframeUrl += '&hideMenu=' + window.XMTPIntegration.options.hideMenu;}
         }
         console.log("XMTPIntegration getIframeUrl: ", iframeUrl);
-        // return 'http://localhost:3000/dm/0x005A166D32f9D5FA6dEEC4FFeF8Dd40Cd3B835B6?message=absasdf'
-        // return 'http://localhost:3000/dm/0x005A166D32f9D5FA6dEEC4FFeF8Dd40Cd3B835B6?message=absasdf'
-        // return 'https://xmtp-humanfs-mikepsinn.vercel.app/dm'
         return iframeUrl;
     };
     window.XMTPIntegration.createSingleFloatingActionButton = function(iframeUrl){
