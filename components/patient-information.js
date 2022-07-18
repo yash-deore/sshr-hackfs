@@ -97,7 +97,7 @@ export function PatientInformation({
   const { classes } = useStyles();
 
   function SellNFT() {
-    console.log(
+    console.log({
       name,
       gender,
       date,
@@ -108,8 +108,8 @@ export function PatientInformation({
       currentMedications,
       symptoms,
       progressNotes,
-      vitalSigns
-    );
+      vitalSigns,
+    });
   }
 
   return (
