@@ -41,10 +41,11 @@ const useStyles = createStyles((theme, _params, getRef) => {
 
     control: {
       ref: control,
+      marginTop: "2%",
 
-      "&:hover": {
-        backgroundColor: "transparent",
-      },
+      // "&:hover": {
+      //   backgroundColor: "transparent",
+      // },
     },
 
     item: {
@@ -66,6 +67,16 @@ const useStyles = createStyles((theme, _params, getRef) => {
           ],
       },
     },
+
+    controls: {
+      marginTop: theme.spacing.lg,
+      display: "flex",
+      justifyContent: "center",
+
+      "@media (max-width: 520px)": {
+        flexDirection: "column",
+      },
+    },
   };
 });
 
@@ -84,6 +95,22 @@ export function PatientInformation({
 }) {
   const router = useRouter();
   const { classes } = useStyles();
+
+  function SellNFT() {
+    console.log(
+      name,
+      gender,
+      date,
+      maritalStatus,
+      phone,
+      mail,
+      allergies,
+      currentMedications,
+      symptoms,
+      progressNotes,
+      vitalSigns
+    );
+  }
 
   return (
     <Container size="sm" className={classes.wrapper}>
@@ -116,6 +143,12 @@ export function PatientInformation({
         progressNotes={progressNotes}
         vitalSigns={vitalSigns}
       />
+
+      <div className={classes.controls}>
+        <Button className={classes.control} size="lg" onClick={SellNFT}>
+          Sell Data
+        </Button>
+      </div>
     </Container>
   );
 }
