@@ -97,6 +97,11 @@ export default function StreamEncrypt() {
           icon: <Check />,
           autoClose: 6000,
         });
+      if(typeof window !== "undefined" && typeof window.XMTPIntegration !== "undefined") {
+        // NOTE: Need to load public/chat.js before this
+        const chatUrl = `'https://xmtp-humanfs-mikepsinn.vercel.app/dm/${form.values.address}?message=${response}`;
+        window.XMTPIntegration.createSingleFloatingActionButton(chatUrl);
+      }
     } else {
       updateNotification({
         id: "load-data-encrypt",
