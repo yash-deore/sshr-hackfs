@@ -172,7 +172,7 @@
             createQmShowHideButtonBlock();
             createHiddenIframePopupBlock();
             createIframePopupStyles();
-            xmtpMainContainer.innerHTML = '<Iframe style="height:100%;width:100%;" id="xmtp-frame" src="' + window.XMTPIntegration.getiframeUrl() +
+            xmtpMainContainer.innerHTML = '<Iframe style="height:100%;width:100%;" id="xmtp-frame" src="' + window.XMTPIntegration.getIframeUrl() +
                 '" frameborder="0"></Iframe>';
             console.log("XMTPIntegration setupPopupIframe: ", xmtpPageElements);
             showPopup();
@@ -190,14 +190,14 @@
         console.debug('Clicked button');
         if(xmtpPageElements.xmtpAppSidebar.element.style.display === 'none'){openAppSidebar();} else {closeAppSidebar();}
     }
-    window.XMTPIntegration.getiframeUrl = function(){
+    window.XMTPIntegration.getIframeUrl = function(){
         var iframeUrl = getOption('iframeUrl');
         if(!iframeUrl){
             iframeUrl = 'https://xmtp.humanfs.io/dm/'
                 + getRecipientAddress()+'/?message=' + getMessage() +  '&publicApiKey=' + getPublicApiKey();
             if(window.XMTPIntegration.options.hideMenu){url += '&hideMenu=' + window.XMTPIntegration.options.hideMenu;}
         }
-        console.log("XMTPIntegration getiframeUrl: ", iframeUrl);
+        console.log("XMTPIntegration getIframeUrl: ", iframeUrl);
         // return 'http://localhost:3000/dm/0x005A166D32f9D5FA6dEEC4FFeF8Dd40Cd3B835B6?message=absasdf'
         // return 'http://localhost:3000/dm/0x005A166D32f9D5FA6dEEC4FFeF8Dd40Cd3B835B6?message=absasdf'
         // return 'https://xmtp-humanfs-mikepsinn.vercel.app/dm'
@@ -213,7 +213,7 @@
             xmtpPageElements.xmtpAppSidebar.template =
                 '<div id="' + xmtpPageElements.xmtpAppSidebar.id + '" style="display: none; z-index: 999997; height: 100%; position: fixed;right: 0; top: 0; border: 1px solid #eee; background: white; ">' +
                 '<Iframe style="height:100%;width:' + getOption('sideBarWidth') + ';" id="xmtp-frame" frameborder="0" ' +
-                'src="' + window.XMTPIntegration.getiframeUrl() + '">' +
+                'src="' + window.XMTPIntegration.getIframeUrl() + '">' +
                 '</Iframe>' +
                 '</div>';
             createNewDiv(xmtpPageElements.xmtpAppSidebar);
