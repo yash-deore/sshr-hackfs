@@ -42,10 +42,6 @@ const useStyles = createStyles((theme, _params, getRef) => {
     control: {
       ref: control,
       marginTop: "2%",
-
-      // "&:hover": {
-      //   backgroundColor: "transparent",
-      // },
     },
 
     item: {
