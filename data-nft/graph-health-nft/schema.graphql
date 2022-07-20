@@ -1,0 +1,7 @@
+type NFTIssued @entity {
+  id: ID!
+  nftHolder: Bytes! #address
+  nftAddress: Bytes! #address
+  tokenId: BigInt!
+  uri: String
+}
