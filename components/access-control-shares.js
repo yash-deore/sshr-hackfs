@@ -93,11 +93,11 @@ export default function AccessControlShares() {
             </thead>
 
             <tbody>
-              {allShares.map((share) => {
+              {allShares.map((share, id) => {
                 const { doctorAddress, streamId } = share;
 
                 return (
-                  <tr>
+                  <tr key={id}>
                     <td>{doctorAddress}</td>
                     <td>{streamId}</td>
                     <td>
