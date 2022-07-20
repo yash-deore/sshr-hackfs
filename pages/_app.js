@@ -72,6 +72,7 @@ function MyApp({ Component, pageProps }) {
                     { link: "/edit", label: "Edit" },
                     { link: "/share", label: "Share" },
                     { link: "/retrieve", label: "Retrieve" },
+                    { link: "/access", label: "Access" },
                   ]}
                 />
                 <Component {...pageProps} />

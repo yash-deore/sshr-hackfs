@@ -50,13 +50,14 @@ export function CeramicConnect() {
 
   async function connectIdentityCeramic() {
     const authData = await authenticateAndGetData();
-    const { authenticate, PBI, PPI, PMI } = authData;
+    const { authenticate, PBI, PPI, PMI, PSI } = authData;
 
     setGlobalStore({
       authenticated: authenticate,
       patientBasic: PBI,
       patientPersonal: PPI,
       patientMedical: PMI,
+      patientShares: PSI,
     });
   }
 

@@ -9,6 +9,7 @@ let authenticate = false;
 let PBI = null;
 let PPI = null;
 let PMI = null;
+let PSI = null;
 let authData = { authenticate, PBI, PPI, PMI };
 
 export async function authenticateAndGetData() {
@@ -49,6 +50,7 @@ export async function authenticateAndGetData() {
         PBI = await datastore.get("patientBasicInformation");
         PPI = await datastore.get("patientPersonalInformation");
         PMI = await datastore.get("patientMedicalInformation");
+        PSI = await datastore.get("patientDataShare");
 
         showNotification({
           color: "teal",
@@ -58,7 +60,7 @@ export async function authenticateAndGetData() {
           autoClose: 3000,
         });
 
-        return { authenticate: true, PBI, PPI, PMI };
+        return { authenticate: true, PBI, PPI, PMI, PSI };
       } catch (err) {
         showNotification({
           color: "red",
