@@ -7,6 +7,8 @@ import { useAccount } from "wagmi";
 import { DIDDataStore } from "@glazed/did-datastore";
 import { ceramic, aliases } from "../constants";
 import { auth } from "../functions/authenticate";
+import { showNotification, updateNotification } from "@mantine/notifications";
+import { AlertCircle, Check } from "tabler-icons-react";
 
 let litCeramicIntegration = new Integration(
   "https://ceramic-clay.3boxlabs.com",
@@ -28,6 +30,15 @@ export default function AccessControlShares() {
   }, []);
 
   async function removeAccess(streamId) {
+    showNotification({
+      id: "load-data-access",
+      loading: true,
+      title: "Removing access from Doctor.",
+      message: `Please wait access is being taken away from the Doctor. Do not reload or leave the page.`,
+      autoClose: false,
+      disallowClose: true,
+    });
+
     const newAccessControlConditions = [
       {
         contractAddress: "",
@@ -42,26 +53,45 @@ export default function AccessControlShares() {
       },
     ];
 
-    await litCeramicIntegration.updateAccess(
-      streamId,
-      newAccessControlConditions
-    );
+    try {
+      await litCeramicIntegration.updateAccess(
+        streamId,
+        newAccessControlConditions
+      );
 
-    const { shares } = patientShares;
-    const newShares = shares.filter((share) => share.streamId !== streamId);
-    const newPatientShares = {
-      shares: newShares,
-    };
+      const { shares } = patientShares;
+      const newShares = shares.filter((share) => share.streamId !== streamId);
+      const newPatientShares = {
+        shares: newShares,
+      };
 
-    await auth();
-    await dataStore.set("patientDataShare", newPatientShares);
+      await auth();
+      await dataStore.set("patientDataShare", newPatientShares);
 
-    setGlobalStore({
-      ...globalStore,
-      patientShares: newPatientShares,
-    });
+      setGlobalStore({
+        ...globalStore,
+        patientShares: newPatientShares,
+      });
 
-    console.log("shares", newShares);
+      updateNotification({
+        id: "load-data-access",
+        color: "teal",
+        title: "Access Removal successful",
+        message: `Access has been successfully been taken away from ${data.address}`,
+        icon: <Check />,
+        autoClose: 3000,
+      });
+    } catch (err) {
+      console.log(err);
+      updateNotification({
+        id: "load-data-edit",
+        color: "red",
+        title: "Error while Access Removal",
+        message: "Access removal was unsuccessful. Please try again.",
+        icon: <AlertCircle />,
+        autoClose: 3000,
+      });
+    }
   }
 
   function DisplayShares() {

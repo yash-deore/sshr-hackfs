@@ -43,15 +43,9 @@
         document.getElementById("website-i-frame").src = url;
         var chatUrl = getParameter("chatUrl");
         if (!chatUrl) {
-          var shareUrl =
-            "https://sshr-hackfs.vercel.app/retrieve/kjzl6cwe1jw14828dgcryroryhln4povhhkloybers1nm8dknq3mq2bgzflpkrx";
-          chatUrl =
-            "https://xmtp-humanfs-mikepsinn.vercel.app/dm/0xBCD7b083C66349eEe78E166c6281581Ab9862630?message=" +
-            shareUrl;
+          chatUrl = "https://xmtp-humanfs-mikepsinn.vercel.app/dm/";
         }
-        window.XMTPIntegration.createSingleFloatingActionButton(
-          "https://xmtp-humanfs-ra3l28m99-mikepsinn.vercel.app/"
-        );
+        window.XMTPIntegration.createSingleFloatingActionButton(chatUrl);
       }
     </script>
   </head>
