@@ -8,6 +8,7 @@ export function GlobalContextProvider({ children }) {
     patientBasic: null, // Patient Basic Information
     patientPersonal: null, // Patient Personal Information
     patientMedical: null, // Patient Medical Information
+    patientShares: null, // Patient Share Information
   });
 
   return (

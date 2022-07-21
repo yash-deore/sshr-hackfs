@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { TextInput, Checkbox, Button, Group, Box } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { Integration } from "lit-ceramic-sdk";
+import { DIDDataStore } from "@glazed/did-datastore";
 import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { Check, AlertCircle } from "tabler-icons-react";
 
+import { ceramic, aliases } from "../constants";
 import { useGlobalContext } from "../global/store";
 import { accessControlArray } from "../functions/accessControl";
 import { selectedShareData } from "../functions/selectedShareData";
@@ -21,6 +23,7 @@ let litCeramicIntegration = new Integration(
 export default function StreamEncrypt() {
   const router = useRouter();
   const { data } = useAccount();
+  const dataStore = new DIDDataStore({ ceramic, model: aliases });
 
   const [globalStore, setGlobalStore] = useGlobalContext();
   const [encryptedStreamId, setEncryptedStreamId] = useState("");
@@ -53,7 +56,8 @@ export default function StreamEncrypt() {
         form.values.address
       );
 
-      const { patientBasic, patientPersonal, patientMedical } = globalStore;
+      const { patientBasic, patientPersonal, patientMedical, patientShares } =
+        globalStore;
       const { message, basicDetails, personalDetails, medicalDetails } =
         form.values;
 
@@ -88,7 +92,27 @@ export default function StreamEncrypt() {
           icon: <AlertCircle />,
           autoClose: 3000,
         });
-      else
+      else {
+        const newShare = {
+          streamId: response,
+          doctorAddress: form.values.address,
+        };
+
+        if (patientShares === null) {
+          const firstShare = {
+            shares: [newShare],
+          };
+          await dataStore.set("patientDataShare", firstShare);
+        } else {
+          const allShares = patientShares.shares;
+          allShares.push(newShare);
+          const newShares = {
+            shares: allShares,
+          };
+
+          await dataStore.set("patientDataShare", newShares);
+        }
+
         updateNotification({
           id: "load-data-encrypt",
           color: "teal",
@@ -97,6 +121,7 @@ export default function StreamEncrypt() {
           icon: <Check />,
           autoClose: 6000,
         });
+      }
     } else {
       updateNotification({
         id: "load-data-encrypt",

@@ -32,12 +32,13 @@
     "key-did-provider-ed25519": "^2.0.0",
     "key-did-resolver": "^2.0.4",
     "lit-ceramic-sdk": "^1.1.13",
-    "next": "12.1.6",
+    "next": "^12.2.2",
     "prettier": "^2.7.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tabler-icons-react": "^1.49.0",
-    "wagmi": "^0.4.12"
+    "wagmi": "^0.4.12",
+    "web-streams-polyfill": "^3.2.1"
   },
   "devDependencies": {
     "dotenv": "^16.0.1",

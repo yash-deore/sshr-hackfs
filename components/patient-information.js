@@ -24,6 +24,9 @@ import { PatientBasicInformation } from "./patient-basic-information";
 import PatientPersonalInformation from "./patient-personal-information";
 import { PatientMedicalInformation } from "./patient-medical-information";
 
+import { create as ipfsHttpClient } from "ipfs-http-client";
+const ipfs = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
+
 const useStyles = createStyles((theme, _params, getRef) => {
   const control = getRef("control");
 
@@ -42,10 +45,6 @@ const useStyles = createStyles((theme, _params, getRef) => {
     control: {
       ref: control,
       marginTop: "2%",
-
-      // "&:hover": {
-      //   backgroundColor: "transparent",
-      // },
     },
 
     item: {
@@ -96,8 +95,8 @@ export function PatientInformation({
   const router = useRouter();
   const { classes } = useStyles();
 
-  function SellNFT() {
-    console.log(
+  async function SellNFT() {
+    const attributes = {
       name,
       gender,
       date,
@@ -108,8 +107,18 @@ export function PatientInformation({
       currentMedications,
       symptoms,
       progressNotes,
-      vitalSigns
-    );
+      vitalSigns,
+    };
+
+    try {
+      const added = await ipfs.add(JSON.stringify(attributes));
+      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      console.log(url);
+    } catch (err) {
+      console.log("Error uploading the file : ", err);
+    }
+
+    // Call Smart contract and create NFT
   }
 
   return (

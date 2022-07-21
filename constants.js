@@ -17,16 +17,23 @@ const PATIENT_MEDICAL_INFORMATION =
 const PATIENT_MEDICAL_DEFINITION =
   "k3y52l7qbv1frxwph8vksd841hts3lpyktvucn3upk3u5i1f0pzv9uy77cu769m2o";
 
+const PATIENT_DATA_SHARE =
+  "ceramic://k3y52l7qbv1fryoya5ieztbsm2k0ulyh2cyke29eh7uso2p3shx2n96n556vcer5s";
+const PATIENT_DATA_SHARE_DEFINITION =
+  "k3y52l7qbv1fryixhztq0znzyzbbwgvxgf795ncxzonfh3mtx4u2gvs5trg1380sg";
+
 export const aliases = {
   schemas: {
     PatientBasicInformation: PATIENT_BASIC_INFORMATION,
     PatientPersonalInformation: PATIENT_PERSONAL_INFORMATION,
     PatientMedicalInformation: PATIENT_MEDICAL_INFORMATION,
+    PatientDataShare: PATIENT_DATA_SHARE,
   },
   definitions: {
     patientBasicInformation: PATIENT_BASIC_DEFINITION,
     patientPersonalInformation: PATIENT_PERSONAL_DEFINITION,
     patientMedicalInformation: PATIENT_MEDICAL_DEFINITION,
+    patientDataShare: PATIENT_DATA_SHARE_DEFINITION,
   },
   tiles: {},
 };
