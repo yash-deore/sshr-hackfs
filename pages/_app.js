@@ -1,20 +1,26 @@
-import { ColorSchemeProvider, MantineProvider } from "@mantine/core";
-import { useHotkeys, useLocalStorage } from "@mantine/hooks";
-import { NotificationsProvider } from "@mantine/notifications";
+import { ColorSchemeProvider, MantineProvider } from '@mantine/core';
+import { useHotkeys, useLocalStorage } from '@mantine/hooks';
+import { NotificationsProvider } from '@mantine/notifications';
+import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 
-import "@rainbow-me/rainbowkit/styles.css";
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  uri: 'https://api.thegraph.com/subgraphs/name/brahmapsen/healthnft',
+});
+
+import '@rainbow-me/rainbowkit/styles.css';
 import {
   RainbowKitProvider,
   midnightTheme,
   lightTheme,
   connectorsForWallets,
   wallet,
-} from "@rainbow-me/rainbowkit";
-import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
-import { publicProvider } from "wagmi/providers/public";
+} from '@rainbow-me/rainbowkit';
+import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
+import { publicProvider } from 'wagmi/providers/public';
 
-import { AppHeader } from "../components/app-header";
-import { GlobalContextProvider } from "../global/store";
+import { AppHeader } from '../components/app-header';
+import { GlobalContextProvider } from '../global/store';
 
 const { chains, provider } = configureChains(
   [chain.mainnet, chain.polygon, chain.polygonMumbai],
@@ -23,7 +29,7 @@ const { chains, provider } = configureChains(
 
 const connectors = connectorsForWallets([
   {
-    groupName: "Recommended",
+    groupName: 'Recommended',
     wallets: [wallet.metaMask({ chains }), wallet.walletConnect({ chains })],
   },
 ]);
@@ -36,22 +42,22 @@ const wagmiClient = createClient({
 
 function MyApp({ Component, pageProps }) {
   const [colorScheme, setColorScheme] = useLocalStorage({
-    key: "mantine-color-scheme",
-    defaultValue: "light",
+    key: 'mantine-color-scheme',
+    defaultValue: 'light',
     getInitialValueInEffect: true,
   });
 
   function toggleColorScheme(value) {
-    return setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+    return setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
   }
 
-  useHotkeys([["mod+J", () => toggleColorScheme()]]);
+  useHotkeys([['mod+J', () => toggleColorScheme()]]);
 
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
         chains={chains}
-        theme={colorScheme === "dark" ? midnightTheme() : lightTheme()}
+        theme={colorScheme === 'dark' ? midnightTheme() : lightTheme()}
         showRecentTransactions={true}
       >
         <ColorSchemeProvider
@@ -63,21 +69,24 @@ function MyApp({ Component, pageProps }) {
             withGlobalStyles
             withNormalizeCSS
           >
-            <NotificationsProvider>
-              <GlobalContextProvider>
-                <AppHeader
-                  links={[
-                    { link: "/", label: "Home" },
-                    { link: "/profile", label: "Profile" },
-                    { link: "/edit", label: "Edit" },
-                    { link: "/share", label: "Share" },
-                    { link: "/retrieve", label: "Retrieve" },
-                    { link: "/access", label: "Access" },
-                  ]}
-                />
-                <Component {...pageProps} />
-              </GlobalContextProvider>
-            </NotificationsProvider>
+            <ApolloProvider client={client}>
+              <NotificationsProvider>
+                <GlobalContextProvider>
+                  <AppHeader
+                    links={[
+                      { link: '/', label: 'Home' },
+                      { link: '/profile', label: 'Profile' },
+                      { link: '/edit', label: 'Edit' },
+                      { link: '/share', label: 'Share' },
+                      { link: '/retrieve', label: 'Retrieve' },
+                      { link: "/access", label: "Access" },
+                      { link: '/nft', label: 'Nft' },
+                    ]}
+                  />
+                  <Component {...pageProps} />
+                </GlobalContextProvider>
+              </NotificationsProvider>
+            </ApolloProvider>
           </MantineProvider>
         </ColorSchemeProvider>
       </RainbowKitProvider>
