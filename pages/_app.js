@@ -80,7 +80,7 @@ function MyApp({ Component, pageProps }) {
                       { link: '/share', label: 'Share' },
                       { link: '/retrieve', label: 'Retrieve' },
                       { link: "/access", label: "Access" },
-                      { link: '/nft', label: 'Nft' },
+                      // { link: '/nft', label: 'Nft' },
                     ]}
                   />
                   <Component {...pageProps} />
