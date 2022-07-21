@@ -12,6 +12,15 @@
 /.next/
 /out/
 
+/data-nft/node_modules
+/data-nft/graph-health-nft/node_modules
+/data-nft/graph-health-nft/build
+/data-nft/.env
+/data-nft/artifacts
+/data-nft/cache
+/data-nft/deployments
+/.env
+
 # production
 /build
 

@@ -1,0 +1,24 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: HealthDataNFT
+    network: mumbai
+    source:
+      address: "0x4A92819aD686915be11711bB36706b195e0625ff"
+      abi: HealthDataNFT
+      startBlock: 27218625
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - NFTIssued
+      abis:
+        - name: HealthDataNFT
+          file: ./abis/HealthDataNFT.json
+      eventHandlers:
+        - event: NFTIssued(indexed address,indexed address,indexed uint256,string)
+          handler: handleNFTIssued
+      file: ./src/health-data-nft.ts
