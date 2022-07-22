@@ -5,7 +5,8 @@ import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  uri: 'https://api.thegraph.com/subgraphs/name/brahmapsen/healthnft',
+  //uri: 'https://api.thegraph.com/subgraphs/name/brahmapsen/healthnft',
+  uri: 'https://api.thegraph.com/subgraphs/name/brahmapsen/healthdatamarket',
 });
 
 import '@rainbow-me/rainbowkit/styles.css';
@@ -79,8 +80,9 @@ function MyApp({ Component, pageProps }) {
                       { link: '/edit', label: 'Edit' },
                       { link: '/share', label: 'Share' },
                       { link: '/retrieve', label: 'Retrieve' },
-                      { link: "/access", label: "Access" },
+                      { link: '/access', label: 'Access' },
                       { link: '/nft', label: 'Nft' },
+                      { link: '/marketplace', label: 'Marketplace' },
                     ]}
                   />
                   <Component {...pageProps} />

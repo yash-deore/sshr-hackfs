@@ -48,7 +48,8 @@ module.exports = {
     },
   },
   etherscan: {
-    apiKey: ETHERSCAN_API_KEY,
+    //change to etherscan-api_key for ethereum chains
+    apiKey: POLYGONSCAN_API_KEY, //ETHERSCAN_API_KEY,
   },
   namedAccounts: {
     deployer: {
