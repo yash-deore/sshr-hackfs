@@ -20,6 +20,8 @@
 /data-nft/cache
 /data-nft/deployments
 /.env
+/data-nft/graph-marketplace/node_modules
+/data-nft/graph-marketplace/build
 
 # production
 /build

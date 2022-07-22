@@ -16,13 +16,13 @@ export default function Nft() {
   const [nftContractAddress, setNftContractAddress] = useState('');
 
   const { loading, error, data } = useQuery(GET_ACTIVE_ITEMS);
-  console.log('DATA', data);
+  //console.log('DATA', data);
   const [nftHolder, setNftHolder] = useState('');
   const [nftAddress, setNftAddress] = useState('');
-  const [uri, setUri] = useState(
-    'ipfs://QmaJ2bALDkHgJP648HhswJoNLwsx4EUuaa9s2ennnFRShv'
-  );
-  const TOKEN_URI = 'ipfs://QmaJ2bALDkHgJP648HhswJoNLwsx4EUuaa9s2ennnFRShv';
+
+  //This token uri has name, description, image and health data as attributes
+  //to view in browser: https://ipfs.io/ipfs/Qme2PXtCzcHABYpvhnJRpW6A7xrVcX91kdCi5jYu6ECcQU
+  const TOKEN_URI = 'ipfs://Qme2PXtCzcHABYpvhnJRpW6A7xrVcX91kdCi5jYu6ECcQU';
 
   async function uploadDataToIPFS() {
     await axios
@@ -31,27 +31,23 @@ export default function Nft() {
         {},
         {
           params: {
-            name: 'priya',
-            datatype: 'MyHealthdata6',
-            recent: '07/21/2022',
+            name: 'John Smith',
+            description: 'MyHealthdata1',
+            image: 'ipfs://QmSvRgYrLRuZ3arjtAnfcWhPm23sBkU9SUPZ88YXf3jHfU',
+            attributes: '[{"height":"160","weight":"100", "bp":"120"}]',
           },
         }
       )
       .then((response) => {
         console.log('Response:', response);
-        //const _data = response.data.data;
+        const _data = response.data.response.IpfsHash;
+        console.log('IpfsHash:', _data);
         // _data.map((row) => {
-        //   row.text == address ? setTwitterMention(true) : '';
         // });
+      })
+      .catch((error) => {
+        console.error(error);
       });
-  }
-
-  function getNFTData() {
-    data.activeItems.map((nft) => {
-      const { nftAddress, tokenId } = nft;
-      console.log('NFT Attributes: ', nftAddress, tokenId);
-    });
-    setNftAddress(nftAddress);
   }
 
   async function createNFT() {
@@ -98,18 +94,23 @@ export default function Nft() {
 
   return (
     <div>
+      <div>
+        <button onClick={uploadDataToIPFS}>upload health data to IPFS</button>{' '}
+        <button onClick={createNFT}>Create Health Data NFT</button>
+        <h1> NFTS listed in Marketplace </h1>
+      </div>
       {loading || !data ? (
         <div>Loading....</div>
       ) : (
-        <div>
-          <h1> List of NFTS </h1>
-          <Card title={nftHolder} description={nftHolder}>
-            <div>NFTAddress: {nftAddress}</div>
-          </Card>
-          <button onClick={getNFTData}>Get NFT data</button>
-          <button onClick={uploadDataToIPFS}>upload health data to IPFS</button>
-          <button onClick={createNFT}>Create Health Data NFT</button>
-        </div>
+        data.activeItems.map((nft, i) => {
+          //console.log(nft);
+          const { price, nftAddress, tokenId, seller } = nft;
+          return (
+            <div key={i}>
+              ID: {tokenId} {'  '} Owner: {seller} {'  '} To Buy: {price}
+            </div>
+          );
+        })
       )}
     </div>
   );

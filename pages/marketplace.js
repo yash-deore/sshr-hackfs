@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 //import { Container, Card, CardGroup, Button } from 'react-bootstrap';
 import axios from 'axios';
 //import Web3Modal from 'web3modal';
-import marketplaceABI from '../constants/HealthDataNFT.json';
+import marketplaceABI from '../constants/HealthNFTMarketplace.json';
+import nftABI from '../constants/HealthDataNFT.json';
 import networkMapping from '../constants/networkMapping.json';
 
 import { Container, Card, CardGroup, Button } from '@mantine/core';
@@ -14,12 +15,16 @@ export default function Home() {
   const [chainId, setChainId] = useState('');
   const [provider, setProvider] = useState('');
   const [account, setAccount] = useState('');
+  const [nftContractAddress, setNftContractAddress] = useState('');
   const [marketplaceContractAddress, setMarketplaceContractAddress] =
     useState('');
+  const [nftContract, setNftContract] = useState('');
+  const [marketplaceContract, setMarketplaceContract] = useState('');
+  const { loading, error, data: listedNfts } = useQuery(GET_ACTIVE_ITEMS);
 
   useEffect(() => {
     init();
-    //loadNFTs();
+    loadNFTs();
   }, []);
 
   async function init() {
@@ -43,37 +48,48 @@ export default function Home() {
       networkMapping[chainIdString].HealthNFTMarketplace[0];
     setMarketplaceContractAddress(marketplaceContractAddress);
     console.log('Contract Address:', marketplaceContractAddress);
+
+    let nftContractAddress = networkMapping[chainIdString].HealthDataNFT[0];
+    setNftContractAddress(nftContractAddress);
+    //console.log('Contract Address:', nftContractAddress);
   }
 
   const loadNFTs = async () => {
     // creating a provider for the frontend to query the unsold items
-    const provider = new ethers.providers.JsonRpcProvider(
-      'https://polygon-mumbai.g.alchemy.com/v2/_ZX6y7tqU8T5cuLhx3yjPA81SryETLcb'
-    );
-    const contract = new ethers.Contract(
-      marketplaceContractAddress,
-      marketplaceABI,
-      provider
-    );
-    const data = await contract.fetchMarketItems();
+    // const provider = new ethers.providers.JsonRpcProvider(
+    //   'https://polygon-mumbai.g.alchemy.com/v2/_ZX6y7tqU8T5cuLhx3yjPA81SryETLcb'
+    // );
+    // const mktplaceContract = new ethers.Contract(
+    //   marketplaceContractAddress,
+    //   marketplaceABI,
+    //   provider
+    // );
+    // const data = await mktplaceContract.getListing(nftContractAddress, 1);
+    // console.log('DATA:', data);
+
+    // const nftContract = new ethers.Contract(
+    //   nftContractAddress,
+    //   nftABI,
+    //   provider
+    // );
 
     /*
      *  map over items returned from smart contract and format
      *  them as well as fetch their token metadata
      */
     const items = await Promise.all(
-      data.map(async (i) => {
-        const tokenUri = await contract.tokenURI(i.tokenId);
-        const meta = await axios.get(tokenUri);
+      listedNfts.activeItems.map(async (i) => {
+        const tokenUri = await nftContract.getTokenURI(1);
+        //const meta = await axios.get(tokenUri);
         let price = ethers.utils.formatUnits(i.price.toString(), 'ether');
         let item = {
           price,
-          tokenId: i.tokenId.toNumber(),
+          tokenId: 1, //i.tokenId.toNumber(),
           seller: i.seller,
-          owner: i.owner,
-          image: meta.data.image,
-          name: meta.data.name,
-          description: meta.data.description,
+          //owner: i.owner,
+          //image: meta.data.image,
+          //name: meta.data.name,
+          //description: meta.data.description,
         };
         return item;
       })
@@ -110,23 +126,15 @@ export default function Home() {
     <Container>
       <div>
         <div>
-          <CardGroup>
-            {nfts.map((nft, i) => (
-              <div key={i}>
-                <Card style={{ width: '24rem' }} className="text-center">
-                  <Card.Img variant="top" src={nft.image} />
-                  <Card.Body>
-                    <Card.Title>{nft.name}</Card.Title>
-                    <Card.Text>{nft.description}</Card.Text>
-                    <Card.Text>
-                      <b>{nft.price !== 0 ? nft.price + ' MATIC' : ''}</b>
-                    </Card.Text>
-                    <Button onClick={() => buyNft(nft)}>Buy NFT</Button>
-                  </Card.Body>
-                </Card>
+          <Card>
+            {!nfts ? (
+              <div>no listing</div>
+            ) : (
+              <div>
+                <h2>Data Listed</h2>
               </div>
-            ))}
-          </CardGroup>
+            )}
+          </Card>
         </div>
       </div>
     </Container>

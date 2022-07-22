@@ -4,7 +4,7 @@ const { moveBlocks } = require("../utils/move-blocks")
 const PRICE = ethers.utils.parseEther("0.1")
 
 async function List() {
-  const tokenId = 2 //fist NFT owned by me
+  const tokenId = 6 //fist NFT owned by me
   console.log("Get Health Data Marketplace contract")
   const healthNFTMarketplace = await ethers.getContract("HealthNFTMarketplace")
 
@@ -20,7 +20,9 @@ async function List() {
   const approvalTx = await healthDataNFT.approve(healthNFTMarketplace.address, tokenId)
   await approvalTx.wait(1)
   console.log("Listing NFT...")
-  const tx = await healthNFTMarketplace.listItem(healthDataNFT.address, tokenId, PRICE)
+  const tx = await healthNFTMarketplace.listItem(healthDataNFT.address, tokenId, PRICE, {
+    gasLimit: 3e6,
+  })
   await tx.wait(1)
   console.log("NFT Listed!")
   if (network.config.chainId == 31337) {
