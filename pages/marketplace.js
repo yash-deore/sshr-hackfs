@@ -1,24 +1,24 @@
-import { useEffect, useState } from 'react';
-import { useQuery, gql } from '@apollo/client';
-import { ethers } from 'ethers';
-import axios from 'axios';
-import marketplaceABI from '../constants/HealthNFTMarketplace.json';
-import nftABI from '../constants/HealthDataNFT.json';
-import networkMapping from '../constants/networkMapping.json';
-import { Container, Card, CardGroup, Button } from '@mantine/core';
-import GET_ACTIVE_ITEMS from '../constants/subgraphQueries';
-import NFTBox from '../components/NFTBox';
+import { useEffect, useState } from "react";
+import { useQuery, gql } from "@apollo/client";
+import { ethers } from "ethers";
+import axios from "axios";
+import marketplaceABI from "../constants/HealthNFTMarketplace.json";
+import nftABI from "../constants/HealthDataNFT.json";
+import networkMapping from "../constants/networkMapping.json";
+import { Container, Card, CardGroup, Button, Title } from "@mantine/core";
+import GET_ACTIVE_ITEMS from "../constants/subgraphQueries";
+import NFTBox from "../components/NFTBox";
 
 export default function Home() {
   const [nfts, setNfts] = useState([]);
-  const [loadingState, setLoadingState] = useState('not-loaded');
-  const [chainId, setChainId] = useState('');
-  const [provider, setProvider] = useState('');
-  const [account, setAccount] = useState('');
-  const [nftContractAddress, setNftContractAddress] = useState('');
-  const [marketplaceAddress, setMarketplaceAddress] = useState('');
-  const [nftContract, setNftContract] = useState('');
-  const [marketplaceContract, setMarketplaceContract] = useState('');
+  const [loadingState, setLoadingState] = useState("not-loaded");
+  const [chainId, setChainId] = useState("");
+  const [provider, setProvider] = useState("");
+  const [account, setAccount] = useState("");
+  const [nftContractAddress, setNftContractAddress] = useState("");
+  const [marketplaceAddress, setMarketplaceAddress] = useState("");
+  const [nftContract, setNftContract] = useState("");
+  const [marketplaceContract, setMarketplaceContract] = useState("");
   const { loading, error, data: listedNfts } = useQuery(GET_ACTIVE_ITEMS);
 
   useEffect(() => {
@@ -32,12 +32,12 @@ export default function Home() {
     setProvider(provider);
 
     const accounts = await ethereum.request({
-      method: 'eth_requestAccounts',
+      method: "eth_requestAccounts",
     });
     setAccount(accounts[0]);
     //console.log('Market place Account', accounts[0]);
 
-    let chainId = await ethereum.request({ method: 'eth_chainId' });
+    let chainId = await ethereum.request({ method: "eth_chainId" });
     let chainIdString = parseInt(chainId).toString();
     setChainId(chainIdString);
     //console.log('chainId', chainIdString);
@@ -52,13 +52,45 @@ export default function Home() {
     //console.log('Contract Address:', nftContractAddress);
   }
 
-  if (loadingState === 'loaded' && !nfts.length)
+  if (loadingState === "loaded" && !nfts.length)
     return <h1>No items in marketplace</h1>;
+
+  function ListingAllNFTs() {
+    if (loading || !listedNfts) {
+      return <h1>Loading ...</h1>;
+    } else {
+      return listedNfts.activeItems.map((nft, i) => {
+        if (i > 4) {
+          //console.log(nft);
+          const { price, nftAddress, tokenId, seller } = nft;
+          //console.log('Market place NFT Address: ', nftAddress);
+          return (
+            <div key={i}>
+              <NFTBox
+                price={price}
+                nftAddress={nftAddress}
+                tokenId={tokenId}
+                seller={seller}
+                provider={provider}
+                account={account}
+                marketplaceAddress={marketplaceAddress}
+                key={`${nftAddress}${tokenId}`}
+              />
+            </div>
+          );
+        }
+      });
+    }
+  }
 
   return (
     <Container>
-      <div>
-        {loading || !listedNfts ? (
+      <Title style={{ margin: "3% 0 1% 0" }} order={2}>
+        Data Market Place
+      </Title>
+      <div>{ListingAllNFTs()}</div>
+
+      {/* {loading || !listedNfts ? (
           <div>Loading....</div>
         ) : (
           listedNfts.activeItems.map((nft, i) => {
@@ -82,8 +114,7 @@ export default function Home() {
               </div>
             );
           })
-        )}
-      </div>
+        )} */}
     </Container>
   );
 }

@@ -1,16 +1,30 @@
-import { useState, useEffect } from 'react';
-import nftABI from '../constants/HealthDataNFT.json';
-import marketplaceABI from '../constants/HealthNFTMarketplace.json';
-import networkMapping from '../constants/networkMapping.json';
+import { useState, useEffect } from "react";
+import nftABI from "../constants/HealthDataNFT.json";
+import marketplaceABI from "../constants/HealthNFTMarketplace.json";
+import networkMapping from "../constants/networkMapping.json";
 
-import Image from 'next/image';
-import { Card } from '@mantine/core';
-import { ethers } from 'ethers';
+// import Image from "next/image";
+import {
+  Card,
+  Image,
+  Text,
+  Group,
+  Badge,
+  Button,
+  ActionIcon,
+  createStyles,
+  useMantineTheme,
+  SimpleGrid,
+  Popover,
+  Title,
+} from "@mantine/core";
+import { ethers } from "ethers";
+import { PatientMedicalInformation } from "./patient-medical-information";
 
 const truncateStr = (fullStr, strLen) => {
   if (fullStr.length <= strLen) return fullStr;
 
-  const separator = '...';
+  const separator = "...";
   const seperatorLength = separator.length;
   const charsToShow = strLen - seperatorLength;
   const frontChars = Math.ceil(charsToShow / 2);
@@ -22,6 +36,32 @@ const truncateStr = (fullStr, strLen) => {
   );
 };
 
+const useStyles = createStyles((theme) => ({
+  card: {
+    backgroundColor:
+      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+  },
+
+  section: {
+    borderBottom: `1px solid ${
+      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
+    }`,
+    paddingLeft: theme.spacing.md,
+    paddingRight: theme.spacing.md,
+    paddingBottom: theme.spacing.md,
+  },
+
+  like: {
+    color: theme.colors.red[6],
+  },
+
+  label: {
+    textTransform: "uppercase",
+    fontSize: theme.fontSizes.xs,
+    fontWeight: 700,
+  },
+}));
+
 export default function NFTBox({
   price,
   nftAddress,
@@ -31,17 +71,20 @@ export default function NFTBox({
   account,
   marketplaceAddress,
 }) {
-  const [imageURI, setImageURI] = useState('');
-  const [tokenName, setTokenName] = useState('');
-  const [tokenDescription, setTokenDescription] = useState('');
-  const [healthData, setHealthData] = useState('');
+  const { classes } = useStyles();
+  const [imageURI, setImageURI] = useState("");
+  const [tokenName, setTokenName] = useState("");
+  const [tokenDescription, setTokenDescription] = useState("");
+  const [healthData, setHealthData] = useState("");
   const [showModal, setShowModal] = useState(false);
   const hideModal = () => setShowModal(false);
   const [paidFlag, setPaidFlag] = useState(false);
   const [nfts, setNfts] = useState([]);
+
+  const [opened, setOpened] = useState(false);
   //const [loadingState, setLoadingState] = useState('not-loaded');
   //const [chainId, setChainId] = useState('');
-  console.log('Params:', nftAddress, tokenId, price);
+  console.log("Params:", nftAddress, tokenId, price);
 
   async function getTokenURI() {
     const signer = provider.getSigner();
@@ -52,39 +95,28 @@ export default function NFTBox({
   }
 
   async function buyItem() {
-    console.log('Buy item');
-
+    console.log("Bought item");
     setPaidFlag(!paidFlag);
-
-    // const signer = provider.getSigner();
-    // const marketplaceContract = new ethers.Contract(
-    //   marketplaceAddress,
-    //   marketplaceABI,
-    //   signer
-    // );
-
-    // const tx = await marketplaceContract.buyItem(nftAddress, tokenId);
-    // await tx.wait(1);
-    // console.log(`Buy item Tx value ${JSON.stringify(tx)}`);
   }
 
   async function updateNFTBoxUI() {
     const tokenURI = await getTokenURI();
+
     console.log(`TokenURI ${tokenURI} TokenID ${tokenId}`);
 
-    if (typeof tokenURI != 'undefined') {
+    if (typeof tokenURI != "undefined") {
       // IPFS Gateway: A server that will return IPFS files from a "normal" URL.
       // We are going to cheat a little here...
-      const requestURL = tokenURI.replace('ipfs://', 'https://ipfs.io/ipfs/');
+      const requestURL = tokenURI.replace("ipfs://", "https://ipfs.io/ipfs/");
       const tokenURIResponse = await (await fetch(requestURL)).json();
 
-      console.log('tokenURIResponse.image:', tokenURIResponse.image);
-      if (typeof tokenURIResponse.image != 'undefined') {
+      console.log("tokenURIResponse.image:", tokenURIResponse.image);
+      if (typeof tokenURIResponse.image != "undefined") {
         const imageURI = tokenURIResponse.image;
-        if (typeof imageURI != 'undefined') {
+        if (typeof imageURI != "undefined") {
           const imageURIURL = imageURI.replace(
-            'ipfs://',
-            'https://ipfs.io/ipfs/'
+            "ipfs://",
+            "https://ipfs.io/ipfs/"
           );
           setImageURI(imageURIURL);
         }
@@ -93,7 +125,7 @@ export default function NFTBox({
       setTokenName(tokenURIResponse.name);
       setTokenDescription(tokenURIResponse.description);
       setHealthData(tokenURIResponse.attributes);
-      console.log('My Health Data', tokenURIResponse.attributes);
+      console.log("My Health Data", tokenURIResponse.attributes);
 
       // We could render the Image on our sever, and just call our sever.
       // For testnets & mainnet -> use moralis server hooks
@@ -110,8 +142,8 @@ export default function NFTBox({
 
   const isOwnedByUser = seller === account || seller === undefined;
   const formattedSellerAddress = isOwnedByUser
-    ? 'you'
-    : truncateStr(seller || '', 15);
+    ? "you"
+    : truncateStr(seller || "", 15);
 
   const handleCardClick = () => {
     isOwnedByUser
@@ -123,53 +155,86 @@ export default function NFTBox({
   };
 
   const handleBuyItemSuccess = () => {
-    console.log('ITEM BOUIGHT............');
+    console.log("ITEM BOUIGHT............");
   };
 
   return (
-    <div>
-      {!paidFlag ? (
-        <div>pay to view health data</div>
-      ) : (
+    <>
+      <SimpleGrid cols={2}>
         <div>
-          <h1>Health Data Viewer</h1>
-          <div>Height: {healthData}</div>
-        </div>
-      )}
-      <div>
-        {imageURI ? (
           <div>
-            <Card
-              title={tokenName}
-              description={tokenDescription}
-              onClick={handleCardClick}
-            >
-              <div className="p-2">
-                <div className="flex flex-col items-end gap-2">
-                  <div>#{tokenId}</div>
+            {imageURI ? (
+              <div>
+                <Card
+                  title={tokenName}
+                  description={tokenDescription}
+                  className={classes.card}
+                  withBorder
+                  radius="md"
+                  p="md"
+                >
+                  <Card.Section className={classes.section} mt="md">
+                    <Group position="apart">
+                      <Text size="lg" weight={500}>
+                        {healthData.gender} , {healthData.date}
+                      </Text>
+                    </Group>
+                    <Text size="sm" mt="xs">
+                      Owned by {formattedSellerAddress}
+                    </Text>
+                  </Card.Section>
 
-                  <div className="italic text-sm">
-                    Owned by {formattedSellerAddress}
-                  </div>
+                  <Card.Section>
+                    <Image src={imageURI} alt={tokenId} height={200} />
+                  </Card.Section>
 
-                  <Image
-                    loader={() => imageURI}
-                    src={imageURI}
-                    height="200"
-                    width="200"
-                  />
+                  <Group mt="xs">
+                    {isOwnedByUser ? (
+                      <></>
+                    ) : (
+                      // <Button
+                      //   onClick={handleCardClick}
+                      //   radius="md"
+                      //   style={{ flex: 1 }}
+                      // >
+                      //   Buy Data
+                      // </Button>
 
-                  <div className="font-bold">
-                    {ethers.utils.formatUnits(0, 'ether')} ETH
-                  </div>
-                </div>
+                      <Popover
+                        opened={opened}
+                        onClose={() => setOpened(false)}
+                        target={
+                          <Button
+                            radius="md"
+                            style={{ flex: 1 }}
+                            onClick={() => setOpened((o) => !o)}
+                          >
+                            Buy Patient Data
+                          </Button>
+                        }
+                        // width={260}
+                        position="right"
+                        withArrow
+                      >
+                        <PatientMedicalInformation
+                          allergies={healthData.allergies}
+                          currentMedications={healthData.currentMedications}
+                          symptoms={healthData.symptoms}
+                          progressNotes=""
+                          vitalSigns={healthData.vitalSigns}
+                        />
+                      </Popover>
+                    )}
+                  </Group>
+                </Card>
+                <br />
               </div>
-            </Card>
+            ) : (
+              <div>no image for this NFT</div>
+            )}
           </div>
-        ) : (
-          <div>no image for this NFT</div>
-        )}
-      </div>
-    </div>
+        </div>
+      </SimpleGrid>
+    </>
   );
 }
