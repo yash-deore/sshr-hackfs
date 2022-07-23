@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import {
   Card,
   Image,
@@ -12,7 +12,7 @@ import {
   Container,
   Title,
   Accordion,
-} from "@mantine/core";
+} from '@mantine/core';
 import {
   Cake,
   GenderMale,
@@ -20,25 +20,25 @@ import {
   Mail,
   Phone,
   User,
-} from "tabler-icons-react";
-import { PatientBasicInformation } from "./patient-basic-information";
-import PatientPersonalInformation from "./patient-personal-information";
-import { PatientMedicalInformation } from "./patient-medical-information";
+} from 'tabler-icons-react';
+import { PatientBasicInformation } from './patient-basic-information';
+import PatientPersonalInformation from './patient-personal-information';
+import { PatientMedicalInformation } from './patient-medical-information';
 
-import { useQuery, gql } from "@apollo/client";
-import networkMapping from "../constants/networkMapping.json";
-import { ethers } from "ethers";
-import GET_ACTIVE_ITEMS from "../constants/subgraphQueries";
-import axios from "axios";
-import healthDataABI from "../constants/HealthDataNFT.json";
-import { useAccount } from "wagmi";
-import marketplaceABI from "../constants/HealthNFTMarketplace.json";
+import { useQuery, gql } from '@apollo/client';
+import networkMapping from '../constants/networkMapping.json';
+import { ethers } from 'ethers';
+import GET_ACTIVE_ITEMS from '../constants/subgraphQueries';
+import axios from 'axios';
+import healthDataABI from '../constants/HealthDataNFT.json';
+import { useAccount } from 'wagmi';
+import marketplaceABI from '../constants/HealthNFTMarketplace.json';
 
-import { create as ipfsHttpClient } from "ipfs-http-client";
-const ipfs = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
+import { create as ipfsHttpClient } from 'ipfs-http-client';
+const ipfs = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0');
 
 const useStyles = createStyles((theme, _params, getRef) => {
-  const control = getRef("control");
+  const control = getRef('control');
 
   return {
     wrapper: {
@@ -54,7 +54,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
 
     control: {
       ref: control,
-      marginTop: "2%",
+      marginTop: '2%',
     },
 
     item: {
@@ -62,7 +62,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
       marginBottom: theme.spacing.lg,
 
       border: `1px solid ${
-        theme.colorScheme === "dark"
+        theme.colorScheme === 'dark'
           ? theme.colors.dark[3]
           : theme.colors.gray[3]
       }`,
@@ -72,23 +72,23 @@ const useStyles = createStyles((theme, _params, getRef) => {
       [`& .${control}`]: {
         color:
           theme.colors[theme.primaryColor][
-            theme.colorScheme === "dark" ? 4 : 6
+            theme.colorScheme === 'dark' ? 4 : 6
           ],
       },
     },
 
     controls: {
       marginTop: theme.spacing.lg,
-      display: "flex",
-      justifyContent: "center",
+      display: 'flex',
+      justifyContent: 'center',
 
-      "@media (max-width: 520px)": {
-        flexDirection: "column",
+      '@media (max-width: 520px)': {
+        flexDirection: 'column',
       },
     },
   };
 });
-const PRICE = ethers.utils.parseEther("0.01");
+const PRICE = ethers.utils.parseEther('0.01');
 
 export function PatientInformation({
   name,
@@ -121,9 +121,9 @@ export function PatientInformation({
     };
 
     const params = {
-      name: "Anonymous",
-      description: "Health Data",
-      image: "ipfs/QmeK4BXjQUTNka1pRTmWjURDEGVXC7E8uEB8xUsD2DGz2c",
+      name: 'Anonymous',
+      description: 'Health Data',
+      image: 'ipfs/QmeK4BXjQUTNka1pRTmWjURDEGVXC7E8uEB8xUsD2DGz2c',
       attributes: attributes,
     };
 
@@ -133,13 +133,13 @@ export function PatientInformation({
       setPatientParameters(url);
       console.log(url);
     } catch (err) {
-      console.log("Error uploading the file : ", err);
+      console.log('Error uploading the file : ', err);
     }
 
     const ethereum = window.ethereum;
     let provider = new ethers.providers.Web3Provider(window.ethereum);
 
-    let chainId = await ethereum.request({ method: "eth_chainId" });
+    let chainId = await ethereum.request({ method: 'eth_chainId' });
     let chainIdString = parseInt(chainId).toString();
 
     let nftContractAddress = networkMapping[chainIdString].HealthDataNFT[0];
@@ -159,7 +159,7 @@ export function PatientInformation({
     console.log(`Tx value ${JSON.stringify(tx)}`);
 
     const tokenId = await healthDataNFTContract.getTokenCounter();
-    console.log("Token Id: " + tokenId);
+    console.log('Token Id: ' + tokenId);
 
     const marketplaceAddress =
       networkMapping[chainIdString].HealthNFTMarketplace[0];
@@ -169,6 +169,13 @@ export function PatientInformation({
       signer
     );
 
+    //First approve the NFT to be listed in Marketplace contract
+    console.log('Approve and add NFT to Marketplace ', data.address);
+    const approvalTx = await healthDataNFTContract.approve(
+      marketplaceAddress,
+      tokenId
+    );
+    await approvalTx.wait(1);
     const tx2 = await marketplaceContract.listItem(
       nftContractAddress,
       tokenId, // manually change for debugging

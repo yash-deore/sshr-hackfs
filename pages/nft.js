@@ -89,22 +89,7 @@ export default function Nft() {
     );
     await tx.wait(1);
     console.log(`Tx value ${JSON.stringify(tx)}`);
-  }
-
-  async function init() {
-    const ethereum = window.ethereum;
-
-    let provider = new ethers.providers.Web3Provider(window.ethereum);
-    setProvider(provider);
-
-    const accounts = await ethereum.request({
-      method: 'eth_requestAccounts',
-    });
-    setAccount(accounts[0]);
-    console.log('Account', accounts[0]);
-
-    let chainId = await ethereum.request({ method: 'eth_chainId' });
-    let chainIdString = parseInt(chainId).toString();
+  }https://gateway.pinata.cloud/ipfs/QmcLtw6iLAV8SJ7KFPzQA8a8egb2RmYzrwCvudcWSEXpbs
     setChainId(chainIdString);
 
     let nftContractAddress = networkMapping[chainIdString].HealthDataNFT[0];
