@@ -51,6 +51,7 @@ export function EncryptedAccordion({ encryptedResponse }) {
 
   function linkShare() {
     const link = "https://sshr-hackfs.vercel.app/retrieve/" + encryptedResponse;
+    localStorage.setItem('message', link)
     if (encryptedResponse.length > 0) {
       return (
         <Accordion.Item label="Share Link">
@@ -62,7 +63,7 @@ export function EncryptedAccordion({ encryptedResponse }) {
     }
   }
 
-  function diplayStreamId() {
+  function displayStreamId() {
     if (encryptedResponse.length > 0) {
       return (
         <Accordion.Item label="Share Stream Id">
@@ -88,7 +89,7 @@ export function EncryptedAccordion({ encryptedResponse }) {
         }}
       >
         {linkShare()}
-        {diplayStreamId()}
+        {displayStreamId()}
       </Accordion>
     </Container>
   );

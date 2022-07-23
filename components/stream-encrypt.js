@@ -97,6 +97,7 @@ export default function StreamEncrypt() {
           streamId: response,
           doctorAddress: form.values.address,
         };
+        localStorage.setItem('recipientAddress', form.values.address)
 
         if (patientShares === null) {
           const firstShare = {
