@@ -5,8 +5,8 @@ import { Card } from '@mantine/core';
 import { ethers } from 'ethers';
 import GET_ACTIVE_ITEMS from '../constants/subgraphQueries';
 import axios from 'axios';
-
-import healthDataABI from '../constants/HealthDataNFT.json';
+import marketplaceABI from '../constants/HealthNFTMarketplace.json';
+import nftABI from '../constants/HealthDataNFT.json';
 
 export default function Nft() {
   //const chainId = 80001;
@@ -14,6 +14,9 @@ export default function Nft() {
   const [provider, setProvider] = useState('');
   const [account, setAccount] = useState('');
   const [nftContractAddress, setNftContractAddress] = useState('');
+  const [marketplaceAddress, setMarketplaceAddress] = useState('');
+  const [tokenId, setTokenId] = useState('');
+  const PRICE = ethers.utils.parseEther('0.01');
 
   const { loading, error, data } = useQuery(GET_ACTIVE_ITEMS);
   //console.log('DATA', data);
@@ -24,6 +27,7 @@ export default function Nft() {
   //to view in browser: https://ipfs.io/ipfs/Qme2PXtCzcHABYpvhnJRpW6A7xrVcX91kdCi5jYu6ECcQU
   const TOKEN_URI = 'ipfs://Qme2PXtCzcHABYpvhnJRpW6A7xrVcX91kdCi5jYu6ECcQU';
 
+  //example data to save to IPFS
   async function uploadDataToIPFS() {
     await axios
       .post(
@@ -56,7 +60,7 @@ export default function Nft() {
       const signer = provider.getSigner();
       const healthDataNFTContract = new ethers.Contract(
         nftContractAddress,
-        healthDataABI,
+        nftABI,
         signer
       );
 
@@ -64,6 +68,27 @@ export default function Nft() {
       await tx.wait(1);
       console.log(`Tx value ${JSON.stringify(tx)}`);
     }
+  }
+
+  async function listNFT() {
+    console.log('List NFT');
+    const signer = provider.getSigner();
+    const marketplaceContract = new ethers.Contract(
+      marketplaceAddress,
+      marketplaceABI,
+      signer
+    );
+
+    const tx = await marketplaceContract.listItem(
+      nftContractAddress,
+      tokenId,
+      PRICE,
+      {
+        gasLimit: 3e6,
+      }
+    );
+    await tx.wait(1);
+    console.log(`Tx value ${JSON.stringify(tx)}`);
   }
 
   async function init() {
@@ -81,11 +106,14 @@ export default function Nft() {
     let chainId = await ethereum.request({ method: 'eth_chainId' });
     let chainIdString = parseInt(chainId).toString();
     setChainId(chainIdString);
-    //console.log('chainId', chainIdString);
 
     let nftContractAddress = networkMapping[chainIdString].HealthDataNFT[0];
     setNftContractAddress(nftContractAddress);
     //console.log('Contract Address:', nftContractAddress);
+
+    const marketplaceAddress =
+      networkMapping[chainIdString].HealthNFTMarketplace[0];
+    setMarketplaceAddress(marketplaceAddress);
   }
 
   useEffect(() => {
@@ -97,21 +125,8 @@ export default function Nft() {
       <div>
         <button onClick={uploadDataToIPFS}>upload health data to IPFS</button>{' '}
         <button onClick={createNFT}>Create Health Data NFT</button>
-        <h1> NFTS listed in Marketplace </h1>
+        <button onClick={listNFT}>LIST health data NFT for Sale</button>
       </div>
-      {loading || !data ? (
-        <div>Loading....</div>
-      ) : (
-        data.activeItems.map((nft, i) => {
-          //console.log(nft);
-          const { price, nftAddress, tokenId, seller } = nft;
-          return (
-            <div key={i}>
-              ID: {tokenId} {'  '} Owner: {seller} {'  '} To Buy: {price}
-            </div>
-          );
-        })
-      )}
     </div>
   );
 }
