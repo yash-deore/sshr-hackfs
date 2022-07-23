@@ -173,6 +173,11 @@ function BloodPressure({ bloodPressure }) {
     pos = "NA";
   else pos = bloodPressure.position;
 
+    if(!bloodPressure.measurement){
+        console.error("No bloodPressure.measurement", bloodPressure)
+        bloodPressure.measurement = {}
+    }
+
   if (
     bloodPressure.measurement.systolic === undefined ||
     bloodPressure.measurement.systolic === 0
@@ -285,7 +290,26 @@ export function PatientMedicalInformation({
   progressNotes,
   vitalSigns,
 }) {
-  const {
+  if(!vitalSigns){vitalSigns = {}}
+    if(!vitalSigns.weight){
+        vitalSigns.weight = "Not Provided"
+    }
+    if(!vitalSigns.height){
+        vitalSigns.height = "Not Provided"
+    }
+    if(!vitalSigns.temperature){
+        vitalSigns.temperature = "Not Provided"
+    }
+    if(!vitalSigns.respiratoryRate){
+        vitalSigns.respiratoryRate = "Not Provided"
+    }
+    if(!vitalSigns.heartRate){
+        vitalSigns.heartRate = "Not Provided"
+    }
+    if(!vitalSigns.bloodPressure){
+        vitalSigns.bloodPressure = "Not Provided"
+    }
+    const {
     weight,
     height,
     temperature,
