@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import {
   Card,
@@ -23,6 +24,15 @@ import {
 import { PatientBasicInformation } from "./patient-basic-information";
 import PatientPersonalInformation from "./patient-personal-information";
 import { PatientMedicalInformation } from "./patient-medical-information";
+
+import { useQuery, gql } from "@apollo/client";
+import networkMapping from "../constants/networkMapping.json";
+import { ethers } from "ethers";
+import GET_ACTIVE_ITEMS from "../constants/subgraphQueries";
+import axios from "axios";
+import healthDataABI from "../constants/HealthDataNFT.json";
+import { useAccount } from "wagmi";
+import marketplaceABI from "../constants/HealthNFTMarketplace.json";
 
 import { create as ipfsHttpClient } from "ipfs-http-client";
 const ipfs = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
@@ -78,6 +88,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
     },
   };
 });
+const PRICE = ethers.utils.parseEther("0.01");
 
 export function PatientInformation({
   name,
@@ -92,33 +103,79 @@ export function PatientInformation({
   progressNotes,
   vitalSigns,
 }) {
+  const { data } = useAccount();
   const router = useRouter();
   const { classes } = useStyles();
 
+  const [patientParameters, setPatientParameters] = useState(null);
+
   async function SellNFT() {
     const attributes = {
-      name,
       gender,
       date,
       maritalStatus,
-      phone,
-      mail,
       allergies,
       currentMedications,
       symptoms,
-      progressNotes,
       vitalSigns,
     };
 
+    const params = {
+      name: "Anonymous",
+      description: "Health Data",
+      image: "ipfs/QmeK4BXjQUTNka1pRTmWjURDEGVXC7E8uEB8xUsD2DGz2c",
+      attributes: attributes,
+    };
+
     try {
-      const added = await ipfs.add(JSON.stringify(attributes));
+      const added = await ipfs.add(JSON.stringify(params));
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      setPatientParameters(url);
       console.log(url);
     } catch (err) {
       console.log("Error uploading the file : ", err);
     }
 
-    // Call Smart contract and create NFT
+    const ethereum = window.ethereum;
+    let provider = new ethers.providers.Web3Provider(window.ethereum);
+
+    let chainId = await ethereum.request({ method: "eth_chainId" });
+    let chainIdString = parseInt(chainId).toString();
+
+    let nftContractAddress = networkMapping[chainIdString].HealthDataNFT[0];
+
+    const signer = provider.getSigner();
+    const healthDataNFTContract = new ethers.Contract(
+      nftContractAddress,
+      healthDataABI,
+      signer
+    );
+
+    const tx = await healthDataNFTContract.mintNft(
+      data.address,
+      patientParameters
+    );
+    await tx.wait(1);
+    console.log(`Tx value ${JSON.stringify(tx)}`);
+
+    const tokenId = await healthDataNFTContract.getTokenCounter();
+    console.log("Token Id: " + tokenId);
+
+    const marketplaceAddress =
+      networkMapping[chainIdString].HealthNFTMarketplace[0];
+    const marketplaceContract = new ethers.Contract(
+      marketplaceAddress,
+      marketplaceABI,
+      signer
+    );
+
+    const tx2 = await marketplaceContract.listItem(
+      nftContractAddress,
+      tokenId, // manually change for debugging
+      PRICE
+    );
+    await tx2.wait(1);
+    console.log(`Tx value ${JSON.stringify(tx2)}`);
   }
 
   return (
