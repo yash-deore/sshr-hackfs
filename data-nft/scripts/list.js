@@ -18,12 +18,12 @@ async function List() {
   //Add first token to NFT market place
   console.log("Approve marketplace to list NFT")
   const approvalTx = await healthDataNFT.approve(healthNFTMarketplace.address, tokenId)
-  await approvalTx.wait(1)
+  await approvalTx.wait(4)
   console.log("Listing NFT...")
   const tx = await healthNFTMarketplace.listItem(healthDataNFT.address, tokenId, PRICE, {
     gasLimit: 3e6,
   })
-  await tx.wait(1)
+  await tx.wait(4)
   console.log("NFT Listed!")
   if (network.config.chainId == 31337) {
     // Moralis has a hard time if you move more than 1 at once!

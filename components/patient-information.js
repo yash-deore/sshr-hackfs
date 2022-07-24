@@ -155,7 +155,7 @@ export function PatientInformation({
       data.address,
       patientParameters
     );
-    await tx.wait(1);
+    await tx.wait(4);
     console.log(`Tx value ${JSON.stringify(tx)}`);
 
     const tokenId = await healthDataNFTContract.getTokenCounter();
@@ -175,13 +175,13 @@ export function PatientInformation({
       marketplaceAddress,
       tokenId
     );
-    await approvalTx.wait(1);
+    await approvalTx.wait(4);
     const tx2 = await marketplaceContract.listItem(
       nftContractAddress,
       tokenId, // manually change for debugging
       PRICE
     );
-    await tx2.wait(1);
+    await tx2.wait(4);
     console.log(`Tx value ${JSON.stringify(tx2)}`);
   }
 
