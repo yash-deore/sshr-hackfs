@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import nftABI from "../constants/HealthDataNFT.json";
-import marketplaceABI from "../constants/HealthNFTMarketplace.json";
-import networkMapping from "../constants/networkMapping.json";
+import { useState, useEffect } from 'react';
+import nftABI from '../constants/HealthDataNFT.json';
+import marketplaceABI from '../constants/HealthNFTMarketplace.json';
+import networkMapping from '../constants/networkMapping.json';
 
 // import Image from "next/image";
 import {
@@ -17,14 +17,14 @@ import {
   SimpleGrid,
   Popover,
   Title,
-} from "@mantine/core";
-import { ethers } from "ethers";
-import { PatientMedicalInformation } from "./patient-medical-information";
+} from '@mantine/core';
+import { ethers } from 'ethers';
+import { PatientMedicalInformation } from './patient-medical-information';
 
 const truncateStr = (fullStr, strLen) => {
   if (fullStr.length <= strLen) return fullStr;
 
-  const separator = "...";
+  const separator = '...';
   const seperatorLength = separator.length;
   const charsToShow = strLen - seperatorLength;
   const frontChars = Math.ceil(charsToShow / 2);
@@ -39,12 +39,12 @@ const truncateStr = (fullStr, strLen) => {
 const useStyles = createStyles((theme) => ({
   card: {
     backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
   },
 
   section: {
     borderBottom: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
+      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
     }`,
     paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.md,
@@ -56,7 +56,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   label: {
-    textTransform: "uppercase",
+    textTransform: 'uppercase',
     fontSize: theme.fontSizes.xs,
     fontWeight: 700,
   },
@@ -72,10 +72,10 @@ export default function NFTBox({
   marketplaceAddress,
 }) {
   const { classes } = useStyles();
-  const [imageURI, setImageURI] = useState("");
-  const [tokenName, setTokenName] = useState("");
-  const [tokenDescription, setTokenDescription] = useState("");
-  const [healthData, setHealthData] = useState("");
+  const [imageURI, setImageURI] = useState('');
+  const [tokenName, setTokenName] = useState('');
+  const [tokenDescription, setTokenDescription] = useState('');
+  const [healthData, setHealthData] = useState('');
   const [showModal, setShowModal] = useState(false);
   const hideModal = () => setShowModal(false);
   const [paidFlag, setPaidFlag] = useState(false);
@@ -84,7 +84,7 @@ export default function NFTBox({
   const [opened, setOpened] = useState(false);
   //const [loadingState, setLoadingState] = useState('not-loaded');
   //const [chainId, setChainId] = useState('');
-  console.log("Params:", nftAddress, tokenId, price);
+  console.log('Params:', nftAddress, tokenId, price);
 
   async function getTokenURI() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -96,7 +96,7 @@ export default function NFTBox({
   }
 
   async function buyItem() {
-    console.log("Bought item");
+    console.log('Bought item');
     setPaidFlag(!paidFlag);
   }
 
@@ -105,24 +105,24 @@ export default function NFTBox({
 
     console.log(`TokenURI ${tokenURI} TokenID ${tokenId}`);
 
-    if (typeof tokenURI != "undefined") {
+    if (typeof tokenURI != 'undefined') {
       // IPFS Gateway: A server that will return IPFS files from a "normal" URL.
       // We are going to cheat a little here...
-      const requestURL = tokenURI.replace("ipfs://", "https://ipfs.io/ipfs/");
+      const requestURL = tokenURI.replace('ipfs://', 'https://ipfs.io/ipfs/');
       const tokenURIResponse = await (await fetch(requestURL)).json();
 
-      console.log("tokenURIResponse.image:", tokenURIResponse.image);
-      if (typeof tokenURIResponse.image != "undefined") {
+      console.log('tokenURIResponse.image:', tokenURIResponse.image);
+      if (typeof tokenURIResponse.image != 'undefined') {
         const imageURI = tokenURIResponse.image;
-        if (typeof imageURI != "undefined") {
+        if (typeof imageURI != 'undefined') {
           const imageURIURL = imageURI.replace(
-            "ipfs://",
-            "https://ipfs.io/ipfs/"
+            'ipfs://',
+            'https://ipfs.io/ipfs/'
           );
           setImageURI(imageURIURL);
         } else {
           setImageURI(
-            "https://avatars.githubusercontent.com/u/109106474?s=200&v=4"
+            'https://avatars.githubusercontent.com/u/109106474?s=200&v=4'
           );
         }
       }
@@ -130,7 +130,7 @@ export default function NFTBox({
       setTokenName(tokenURIResponse.name);
       setTokenDescription(tokenURIResponse.description);
       setHealthData(tokenURIResponse.attributes);
-      console.log("My Health Data", tokenURIResponse.attributes);
+      console.log('My Health Data', tokenURIResponse.attributes);
 
       // We could render the Image on our sever, and just call our sever.
       // For testnets & mainnet -> use moralis server hooks
@@ -147,8 +147,8 @@ export default function NFTBox({
 
   const isOwnedByUser = seller === account || seller === undefined;
   const formattedSellerAddress = isOwnedByUser
-    ? "you"
-    : truncateStr(seller || "", 15);
+    ? 'you'
+    : truncateStr(seller || '', 15);
 
   const handleCardClick = () => {
     isOwnedByUser
@@ -160,7 +160,7 @@ export default function NFTBox({
   };
 
   const handleBuyItemSuccess = () => {
-    console.log("ITEM BOUIGHT............");
+    console.log('ITEM BOUIGHT............');
   };
 
   return (
@@ -181,7 +181,7 @@ export default function NFTBox({
                   <Card.Section className={classes.section} mt="md">
                     <Group position="apart">
                       <Text size="lg" weight={500}>
-                        {healthData.gender} , {healthData.date}
+                        ID: {tokenId} {healthData.gender} , {healthData.date}
                       </Text>
                     </Group>
                     <Text size="sm" mt="xs">

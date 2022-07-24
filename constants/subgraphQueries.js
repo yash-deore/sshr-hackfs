@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 // const GET_ACTIVE_ITEMS = gql`
 //   {
@@ -14,7 +14,7 @@ import { gql } from "@apollo/client";
 
 const GET_ACTIVE_ITEMS = gql`
   {
-    activeItems(first: 100) {
+    activeItems(first: 50, orderBy: tokenId) {
       id
       buyer
       seller
