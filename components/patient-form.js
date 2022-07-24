@@ -353,8 +353,8 @@ export default function PatientForm() {
           >
             <NumberInput
               required
-              label="Country Code"
-              placeholder="Your Country Code"
+              label="Telephone Country Code"
+              placeholder="Your Telephone Country Code"
               classNames={classes}
               {...form.getInputProps("countryCode")}
             />
@@ -567,8 +567,8 @@ export default function PatientForm() {
           >
             <NumberInput
               required
-              label="Country Code"
-              placeholder="Your Country Code"
+              label="Telephone Country Code"
+              placeholder="Your Telephone Country Code"
               classNames={classes}
               {...form.getInputProps("countryCode")}
             />
