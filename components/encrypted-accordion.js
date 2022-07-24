@@ -1,5 +1,6 @@
 import { Container, Title, Accordion, createStyles } from "@mantine/core";
 import { ButtonCopy } from "./copy-to-clipboard";
+import {convertEncryptedStreamIdToShareUrl} from "../functions/convertEncryptedStreamIdToShareUrl"
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const control = getRef("control");
@@ -46,28 +47,27 @@ const useStyles = createStyles((theme, _params, getRef) => {
   };
 });
 
-export function EncryptedAccordion({ encryptedResponse }) {
+export function EncryptedAccordion({ encryptedStreamId }) {
   const { classes } = useStyles();
 
   function linkShare() {
-    const link = "https://sshr-hackfs.vercel.app/retrieve/" + encryptedResponse;
-    localStorage.setItem('message', link)
-    if (encryptedResponse.length > 0) {
+    if (encryptedStreamId.length > 0) {
+      const shareUrl = convertEncryptedStreamIdToShareUrl(encryptedStreamId)
       return (
         <Accordion.Item label="Share Link">
           Share this link. You do not have to worry about this link going public
           as the data is access controlled. <br /> <br />
-          <ButtonCopy link={link} />
+          <ButtonCopy link={shareUrl} />
         </Accordion.Item>
       );
     }
   }
 
-  function displayStreamId() {
-    if (encryptedResponse.length > 0) {
+  function displayEncryptedStreamId() {
+    if (encryptedStreamId.length > 0) {
       return (
         <Accordion.Item label="Share Stream Id">
-          Share this stream Id : <b>{encryptedResponse}</b>
+          Share this stream Id : <b>{encryptedStreamId}</b>
         </Accordion.Item>
       );
     }
@@ -89,7 +89,7 @@ export function EncryptedAccordion({ encryptedResponse }) {
         }}
       >
         {linkShare()}
-        {displayStreamId()}
+        {displayEncryptedStreamId()}
       </Accordion>
     </Container>
   );

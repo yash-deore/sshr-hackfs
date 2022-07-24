@@ -29,7 +29,7 @@ export default function AccessControlShares() {
     litCeramicIntegration.startLitClient(window);
   }, []);
 
-  async function removeAccess(streamId) {
+  async function removeAccess(encryptedStreamId) {
     showNotification({
       id: "load-data-access",
       loading: true,
@@ -55,12 +55,12 @@ export default function AccessControlShares() {
 
     try {
       await litCeramicIntegration.updateAccess(
-        streamId,
+        encryptedStreamId,
         newAccessControlConditions
       );
 
       const { shares } = patientShares;
-      const newShares = shares.filter((share) => share.streamId !== streamId);
+      const newShares = shares.filter((share) => share.encryptedStreamId !== encryptedStreamId);
       const newPatientShares = {
         shares: newShares,
       };
@@ -124,16 +124,16 @@ export default function AccessControlShares() {
 
             <tbody>
               {allShares.map((share, id) => {
-                const { doctorAddress, streamId } = share;
+                const { doctorAddress, encryptedStreamId } = share;
 
                 return (
                   <tr key={id}>
                     <td>{doctorAddress}</td>
-                    <td>{streamId}</td>
+                    <td>{encryptedStreamId}</td>
                     <td>
                       <Button
                         color="red"
-                        onClick={() => removeAccess(streamId)}
+                        onClick={() => removeAccess(encryptedStreamId)}
                       >
                         Remove Access
                       </Button>

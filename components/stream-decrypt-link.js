@@ -61,14 +61,14 @@ export default function DecryptStreamLink() {
   const { classes } = useStyles();
   const router = useRouter();
   const {
-    query: { streamId },
+    query: { encryptedStreamId },
   } = router;
 
   const [decryptedResponse, setDecryptedResponse] = useState("");
 
   function decryptStream() {
     litCeramicIntegration
-      .readAndDecrypt(streamId)
+      .readAndDecrypt(encryptedStreamId)
       .then((value) => {
         console.log("Decrypted String ==>> ", value);
         if (value === "FALSE")
@@ -113,7 +113,7 @@ export default function DecryptStreamLink() {
       return (
         <Container size="sm" className={classes.wrapper}>
           <Title order={3} align="center" className={classes.title}>
-            Stream Id: <b>{streamId}</b>
+            Stream Id: <b>{encryptedStreamId}</b>
           </Title>
 
           <Accordion
