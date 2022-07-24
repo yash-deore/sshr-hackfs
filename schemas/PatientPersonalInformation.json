@@ -5,7 +5,7 @@
   "properties": {
     "countryCode": {
       "type": "string",
-      "description": "Country code of the country that the patient lives in."
+      "description": "Telephone country code prefix of the country that the patient lives in."
     },
     "phoneNumber": {
       "type": "string",

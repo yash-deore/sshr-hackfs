@@ -4,6 +4,8 @@ import { useGlobalContext } from "../global/store";
 import { PatientInformation } from "./patient-information";
 import { NewPatient } from "./new-patient";
 import { authenticateAndGetData } from "../functions/authenticateAndGetData";
+import {showMessenger} from "../functions/showMessenger"
+import {MESSENGER_URL} from "../constants"
 
 const useStyles = createStyles((theme) => ({
   controls: {
@@ -45,7 +47,7 @@ export function CeramicConnect() {
   async function connectIdentityCeramic() {
     const authData = await authenticateAndGetData();
     const { authenticate, PBI, PPI, PMI, PSI } = authData;
-
+    showMessenger(MESSENGER_URL+"/dm/")
     setGlobalStore({
       authenticated: authenticate,
       patientBasic: PBI,
