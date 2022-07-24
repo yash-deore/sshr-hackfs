@@ -81,7 +81,7 @@ function MyApp({ Component, pageProps }) {
                       { link: "/share", label: "Share" },
                       { link: "/retrieve", label: "Retrieve" },
                       { link: "/access", label: "Access" },
-                      { link: "/marketplace", label: "Marketplace" },
+                      // { link: "/marketplace", label: "Marketplace" },
                     ]}
                   />
                   <Component {...pageProps} />
