@@ -24,7 +24,11 @@ import { AppHeader } from "../components/app-header";
 import { GlobalContextProvider } from "../global/store";
 
 const { chains, provider } = configureChains(
-  [chain.mainnet, chain.polygon, chain.polygonMumbai],
+  [
+      //chain.mainnet,
+      //chain.polygon,
+        chain.polygonMumbai
+  ],
   [publicProvider()]
 );
 
@@ -81,7 +85,7 @@ function MyApp({ Component, pageProps }) {
                       { link: "/share", label: "Share" },
                       { link: "/retrieve", label: "Retrieve" },
                       { link: "/access", label: "Access" },
-                      // { link: "/marketplace", label: "Marketplace" },
+                      { link: "/marketplace", label: "Marketplace" },
                     ]}
                   />
                   <Component {...pageProps} />
