@@ -465,7 +465,10 @@ export function CeramicConnect() {
           progressNotes,
           vitalSigns,
         } = patientMedical;
-        const completePhoneNumber = countryCode + " " + phoneNumber;
+        let completePhoneNumber = phoneNumber;
+        if(countryCode){ // Fix NaN in Phone number
+          completePhoneNumber = countryCode + " " + phoneNumber;
+        }
         const dateConversion = new Date(dateOfBirth);
         const convertedDateOfBirth = dateConversion.toString().substring(4, 15);
 
