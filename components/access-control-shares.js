@@ -5,14 +5,14 @@ import { Button, Container, Paper, Table } from "@mantine/core";
 import { Integration } from "lit-ceramic-sdk";
 import { useAccount } from "wagmi";
 import { DIDDataStore } from "@glazed/did-datastore";
-import { ceramic, aliases } from "../constants";
+import {ceramic, aliases, CHAIN, API_URL} from "../constants"
 import { auth } from "../functions/authenticate";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { AlertCircle, Check } from "tabler-icons-react";
 
 let litCeramicIntegration = new Integration(
-  "https://ceramic-clay.3boxlabs.com",
-  "ethereum"
+  API_URL,
+  CHAIN
 );
 
 export default function AccessControlShares() {
@@ -43,7 +43,7 @@ export default function AccessControlShares() {
       {
         contractAddress: "",
         standardContractType: "",
-        chain: "ethereum",
+        chain: CHAIN,
         method: "",
         parameters: [":userAddress"],
         returnValueTest: {

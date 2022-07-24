@@ -6,10 +6,11 @@ import { DecryptedResponse } from "./decrypted-response";
 import { DecryptedAccordianDisplay } from "./decrypted-accordion";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { AlertCircle, Check } from "tabler-icons-react";
+import {API_URL, CHAIN} from "../constants"
 
 let litCeramicIntegration = new Integration(
-  "https://ceramic-clay.3boxlabs.com",
-  "ethereum"
+    API_URL,
+  CHAIN
 );
 
 export default function StreamDecrypt() {
@@ -100,7 +101,7 @@ export default function StreamDecrypt() {
           radius="xl"
           size="md"
           placeholder="
-        Enter Stream ID : 
+        Enter Stream ID :
         kjzl6cwe1jw145nrlug02dm9j6myxy8whotmq3kukojogjz2lk03zoe5s0wrfr1"
           {...form.getInputProps("streamId")}
         />

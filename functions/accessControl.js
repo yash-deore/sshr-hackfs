@@ -1,9 +1,10 @@
+import {CHAIN} from "../constants"
 export function accessControlArray(encrypterAddress, receiverAddress) {
-  const accessArray = [
+  return [
     {
       contractAddress: "",
       standardContractType: "",
-      chain: "ethereum",
+      chain: CHAIN,
       method: "",
       parameters: [":userAddress"],
       returnValueTest: {
@@ -11,11 +12,11 @@ export function accessControlArray(encrypterAddress, receiverAddress) {
         value: encrypterAddress,
       },
     },
-    { operator: "or" },
+    {operator: "or"},
     {
       contractAddress: "",
       standardContractType: "",
-      chain: "ethereum",
+      chain: CHAIN,
       method: "",
       parameters: [":userAddress"],
       returnValueTest: {
@@ -24,6 +25,4 @@ export function accessControlArray(encrypterAddress, receiverAddress) {
       },
     },
   ];
-
-  return accessArray;
 }

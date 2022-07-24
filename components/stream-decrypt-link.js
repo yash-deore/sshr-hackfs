@@ -5,10 +5,11 @@ import { showNotification, updateNotification } from "@mantine/notifications";
 import { AlertCircle, Check } from "tabler-icons-react";
 import { DecryptedAccordianDisplay } from "./decrypted-accordion";
 import { Accordion, Container, createStyles, Title } from "@mantine/core";
+import {API_URL, CHAIN} from "../constants"
 
 let litCeramicIntegration = new Integration(
-  "https://ceramic-clay.3boxlabs.com",
-  "ethereum"
+    API_URL,
+    CHAIN
 );
 
 const useStyles = createStyles((theme, _params, getRef) => {

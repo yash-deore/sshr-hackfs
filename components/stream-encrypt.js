@@ -8,7 +8,7 @@ import { useAccount } from "wagmi";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { Check, AlertCircle } from "tabler-icons-react";
 
-import { ceramic, aliases } from "../constants";
+import {ceramic, aliases, CHAIN, API_URL} from "../constants"
 import { useGlobalContext } from "../global/store";
 import { accessControlArray } from "../functions/accessControl";
 import { selectedShareData } from "../functions/selectedShareData";
@@ -16,8 +16,8 @@ import { EncryptedAccordion } from "./encrypted-accordion";
 import { ethers } from "ethers";
 
 let litCeramicIntegration = new Integration(
-  "https://ceramic-clay.3boxlabs.com",
-  "ethereum"
+    API_URL,
+  CHAIN
 );
 
 export default function StreamEncrypt() {
