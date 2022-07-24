@@ -119,6 +119,8 @@ export default function NFTBox({
             "https://ipfs.io/ipfs/"
           );
           setImageURI(imageURIURL);
+        } else {
+          setImageURI("https://avatars.githubusercontent.com/u/109106474?s=200&v=4")
         }
       }
 
@@ -163,7 +165,7 @@ export default function NFTBox({
       <SimpleGrid cols={2}>
         <div>
           <div>
-            {imageURI ? (
+            {
               <div>
                 <Card
                   title={tokenName}
@@ -229,9 +231,7 @@ export default function NFTBox({
                 </Card>
                 <br />
               </div>
-            ) : (
-              <div>no image for this NFT</div>
-            )}
+            }
           </div>
         </div>
       </SimpleGrid>
