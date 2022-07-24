@@ -8,17 +8,16 @@ import { useAccount } from "wagmi";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { Check, AlertCircle } from "tabler-icons-react";
 
-import { ceramic, aliases } from "../constants";
+import { ceramic, aliases, CHAIN, API_URL, MESSENGER_URL } from "../constants";
 import { useGlobalContext } from "../global/store";
 import { accessControlArray } from "../functions/accessControl";
 import { selectedShareData } from "../functions/selectedShareData";
 import { EncryptedAccordion } from "./encrypted-accordion";
 import { ethers } from "ethers";
+import { convertEncryptedStreamIdToShareUrl } from "../functions/convertEncryptedStreamIdToShareUrl";
+import { showMessenger } from "../functions/showMessenger";
 
-let litCeramicIntegration = new Integration(
-  "https://ceramic-clay.3boxlabs.com",
-  "ethereum"
-);
+let litCeramicIntegration = new Integration(API_URL, CHAIN);
 
 export default function StreamEncrypt() {
   const router = useRouter();
@@ -76,14 +75,14 @@ export default function StreamEncrypt() {
       const encryptString = JSON.stringify(encryptObject);
       console.log(encryptObject);
 
-      const response = await litCeramicIntegration.encryptAndWrite(
+      const encryptedStreamId = await litCeramicIntegration.encryptAndWrite(
         encryptString,
         accessControlConditions
       );
-      console.log(response);
-      setEncryptedStreamId(response);
+      console.log(encryptedStreamId);
+      setEncryptedStreamId(encryptedStreamId);
 
-      if (response.startsWith("something"))
+      if (encryptedStreamId.startsWith("something"))
         updateNotification({
           id: "load-data-encrypt",
           color: "red",
@@ -94,9 +93,17 @@ export default function StreamEncrypt() {
         });
       else {
         const newShare = {
-          streamId: response,
+          encryptedStreamId: encryptedStreamId,
           doctorAddress: form.values.address,
         };
+        localStorage.setItem("recipientAddress", form.values.address);
+        showMessenger(
+          MESSENGER_URL +
+            "/dm/" +
+            form.values.address +
+            "?message=" +
+            convertEncryptedStreamIdToShareUrl(encryptedStreamId)
+        );
 
         if (patientShares === null) {
           const firstShare = {
@@ -134,12 +141,12 @@ export default function StreamEncrypt() {
     }
   }
 
-  function EncryptedStreamIdDisplay() {
+  function encryptedStreamIdDisplay() {
     if (
       encryptedStreamId.length > 0 &&
       !encryptedStreamId.startsWith("something")
     )
-      return <EncryptedAccordion encryptedResponse={encryptedStreamId} />;
+      return <EncryptedAccordion encryptedStreamId={encryptedStreamId} />;
   }
 
   useEffect(() => {
@@ -202,7 +209,7 @@ export default function StreamEncrypt() {
         </Button>
       </form>
 
-      {EncryptedStreamIdDisplay()}
+      {encryptedStreamIdDisplay()}
     </div>
   );
 }

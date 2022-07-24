@@ -126,7 +126,7 @@ function HeartRate({ heartRate }) {
             Heart Rate
           </Text>
           <Text weight={700} size="xl">
-            {heartRate === 0 || heartRate === undefined
+            {heartRate === 0 || heartRate === undefined || heartRate === "NA"
               ? "NA"
               : heartRate + " bpm"}
           </Text>
@@ -157,7 +157,9 @@ function RespiratoryRate({ respiratoryRate }) {
             Respiratory Rate
           </Text>
           <Text weight={700} size="xl">
-            {respiratoryRate === 0 || respiratoryRate === undefined
+            {respiratoryRate === 0 ||
+            respiratoryRate === undefined ||
+            respiratoryRate === "NA"
               ? "NA"
               : respiratoryRate + " per min"}
           </Text>
@@ -172,6 +174,19 @@ function BloodPressure({ bloodPressure }) {
   if (bloodPressure.position === undefined || bloodPressure.position === "")
     pos = "NA";
   else pos = bloodPressure.position;
+
+  if (
+    !bloodPressure.measurement ||
+    typeof bloodPressure.measurement === "string"
+  ) {
+    console.error("No bloodPressure.measurement.  Got: ", {
+      bloodPressure,
+    });
+    if (typeof bloodPressure === "string") {
+      bloodPressure = {};
+    }
+    bloodPressure.measurement = {};
+  }
 
   if (
     bloodPressure.measurement.systolic === undefined ||
@@ -265,7 +280,7 @@ function BloodPressure({ bloodPressure }) {
 }
 
 function ArrayInRichTextEditor({ array }) {
-  if (array.length === 0)
+  if (!array || array.length === 0)
     return <RichTextEditor readOnly value="<strong>None</strong>" />;
 
   let display = "";
@@ -285,6 +300,27 @@ export function PatientMedicalInformation({
   progressNotes,
   vitalSigns,
 }) {
+  if (!vitalSigns) {
+    vitalSigns = {};
+  }
+  if (!vitalSigns.weight) {
+    vitalSigns.weight = "NA";
+  }
+  if (!vitalSigns.height) {
+    vitalSigns.height = "NA";
+  }
+  if (!vitalSigns.temperature) {
+    vitalSigns.temperature = "NA";
+  }
+  if (!vitalSigns.respiratoryRate) {
+    vitalSigns.respiratoryRate = "NA";
+  }
+  if (!vitalSigns.heartRate) {
+    vitalSigns.heartRate = "NA";
+  }
+  if (!vitalSigns.bloodPressure) {
+    vitalSigns.bloodPressure = "NA";
+  }
   const {
     weight,
     height,

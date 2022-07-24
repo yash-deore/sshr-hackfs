@@ -6,18 +6,16 @@ import { DecryptedResponse } from "./decrypted-response";
 import { DecryptedAccordianDisplay } from "./decrypted-accordion";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { AlertCircle, Check } from "tabler-icons-react";
+import { API_URL, CHAIN } from "../constants";
 
-let litCeramicIntegration = new Integration(
-  "https://ceramic-clay.3boxlabs.com",
-  "ethereum"
-);
+let litCeramicIntegration = new Integration(API_URL, CHAIN);
 
 export default function StreamDecrypt() {
   const [decryptedResponse, setDecryptedResponse] = useState("");
 
   const form = useForm({
     initialValues: {
-      streamId: "",
+      encryptedStreamId: "",
     },
   });
 
@@ -34,7 +32,7 @@ export default function StreamDecrypt() {
     });
 
     litCeramicIntegration
-      .readAndDecrypt(form.values.streamId)
+      .readAndDecrypt(form.values.encryptedStreamId)
       .then((value) => {
         console.log("Decrypted String ==>> ", value);
         if (value === "FALSE")
@@ -100,9 +98,9 @@ export default function StreamDecrypt() {
           radius="xl"
           size="md"
           placeholder="
-        Enter Stream ID : 
+        Enter Stream ID :
         kjzl6cwe1jw145nrlug02dm9j6myxy8whotmq3kukojogjz2lk03zoe5s0wrfr1"
-          {...form.getInputProps("streamId")}
+          {...form.getInputProps("encryptedStreamId")}
         />
         <Button type="submit" size="md" radius="xl" style={{ margin: "1% 0" }}>
           Decrypt

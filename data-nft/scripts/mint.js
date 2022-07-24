@@ -7,7 +7,7 @@ async function mintHealthDataNFT() {
   const healthDataNFT = await ethers.getContract("HealthDataNFT")
   console.log(`Minting data NFT... for signer ${signer.address}`)
   const mintTx = await healthDataNFT.mintNft(signer.address, tokenUri)
-  const mintTxReceipt = await mintTx.wait(1)
+  const mintTxReceipt = await mintTx.wait(4)
   console.log(
     `Minted tokenId ${mintTxReceipt.events[0].args.tokenId.toString()} from contract: ${
       healthDataNFT.address

@@ -1,6 +1,10 @@
 import { CeramicClient } from "@ceramicnetwork/http-client";
 
-const API_URL = "https://ceramic-clay.3boxlabs.com";
+export const CHAIN = "mumbai"
+
+export const API_URL = "https://ceramic-clay.3boxlabs.com";
+//export const MESSENGER_URL = "http://localhost:3001";
+export const MESSENGER_URL = "https://xmtp-humanfs-mikepsinn.vercel.app";
 
 const PATIENT_BASIC_INFORMATION =
   "ceramic://k3y52l7qbv1fryb4jsy2lh9ppgfvzn7opmzhmcy4remy5gcagydltb6bkyt9j58n4";

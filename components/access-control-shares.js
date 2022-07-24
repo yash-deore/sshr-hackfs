@@ -1,19 +1,16 @@
 import { useGlobalContext } from "../global/store";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { Button, Container, Paper, Table } from "@mantine/core";
+import { Button, Container, Paper, Table, Title } from "@mantine/core";
 import { Integration } from "lit-ceramic-sdk";
 import { useAccount } from "wagmi";
 import { DIDDataStore } from "@glazed/did-datastore";
-import { ceramic, aliases } from "../constants";
+import { ceramic, aliases, CHAIN, API_URL } from "../constants";
 import { auth } from "../functions/authenticate";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { AlertCircle, Check } from "tabler-icons-react";
 
-let litCeramicIntegration = new Integration(
-  "https://ceramic-clay.3boxlabs.com",
-  "ethereum"
-);
+let litCeramicIntegration = new Integration(API_URL, CHAIN);
 
 export default function AccessControlShares() {
   const router = useRouter();
@@ -29,7 +26,7 @@ export default function AccessControlShares() {
     litCeramicIntegration.startLitClient(window);
   }, []);
 
-  async function removeAccess(streamId) {
+  async function removeAccess(encryptedStreamId) {
     showNotification({
       id: "load-data-access",
       loading: true,
@@ -43,7 +40,7 @@ export default function AccessControlShares() {
       {
         contractAddress: "",
         standardContractType: "",
-        chain: "ethereum",
+        chain: CHAIN,
         method: "",
         parameters: [":userAddress"],
         returnValueTest: {
@@ -55,12 +52,14 @@ export default function AccessControlShares() {
 
     try {
       await litCeramicIntegration.updateAccess(
-        streamId,
+        encryptedStreamId,
         newAccessControlConditions
       );
 
       const { shares } = patientShares;
-      const newShares = shares.filter((share) => share.streamId !== streamId);
+      const newShares = shares.filter(
+        (share) => share.encryptedStreamId !== encryptedStreamId
+      );
       const newPatientShares = {
         shares: newShares,
       };
@@ -113,6 +112,9 @@ export default function AccessControlShares() {
 
       return (
         <Container>
+          <Title style={{ margin: "3% 0 1% 0" }} order={2}>
+            Share Logs
+          </Title>
           <Table>
             <thead>
               <tr>
@@ -124,16 +126,16 @@ export default function AccessControlShares() {
 
             <tbody>
               {allShares.map((share, id) => {
-                const { doctorAddress, streamId } = share;
+                const { doctorAddress, encryptedStreamId } = share;
 
                 return (
                   <tr key={id}>
                     <td>{doctorAddress}</td>
-                    <td>{streamId}</td>
+                    <td>{encryptedStreamId}</td>
                     <td>
                       <Button
                         color="red"
-                        onClick={() => removeAccess(streamId)}
+                        onClick={() => removeAccess(encryptedStreamId)}
                       >
                         Remove Access
                       </Button>

@@ -27,11 +27,11 @@ const networkConfig = {
 }
 
 const developmentChains = ["hardhat", "localhost"]
-const VERIFICATION_BLOCK_CONFIRMATIONS = 1 //was 6 BPS
+const VERIFICATION_BLOCK_CONFIRMATIONS = 6
 const DECIMALS = "18"
 const INITIAL_PRICE = "200000000000000000000"
-const frontEndContractsFile = "./app/constants/networkMapping.json"
-const frontEndAbiLocation = "./app/constants/"
+const frontEndContractsFile = "../constants/networkMapping.json"
+const frontEndAbiLocation = "../constants/"
 
 module.exports = {
   networkConfig,

@@ -5,11 +5,9 @@ import { showNotification, updateNotification } from "@mantine/notifications";
 import { AlertCircle, Check } from "tabler-icons-react";
 import { DecryptedAccordianDisplay } from "./decrypted-accordion";
 import { Accordion, Container, createStyles, Title } from "@mantine/core";
+import { API_URL, CHAIN } from "../constants";
 
-let litCeramicIntegration = new Integration(
-  "https://ceramic-clay.3boxlabs.com",
-  "ethereum"
-);
+let litCeramicIntegration = new Integration(API_URL, CHAIN);
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const control = getRef("control");
@@ -60,14 +58,14 @@ export default function DecryptStreamLink() {
   const { classes } = useStyles();
   const router = useRouter();
   const {
-    query: { streamId },
+    query: { encryptedStreamId },
   } = router;
 
   const [decryptedResponse, setDecryptedResponse] = useState("");
 
   function decryptStream() {
     litCeramicIntegration
-      .readAndDecrypt(streamId)
+      .readAndDecrypt(encryptedStreamId)
       .then((value) => {
         console.log("Decrypted String ==>> ", value);
         if (value === "FALSE")
@@ -112,7 +110,7 @@ export default function DecryptStreamLink() {
       return (
         <Container size="sm" className={classes.wrapper}>
           <Title order={3} align="center" className={classes.title}>
-            Stream Id: <b>{streamId}</b>
+            Stream Id: <b>{encryptedStreamId}</b>
           </Title>
 
           <Accordion
