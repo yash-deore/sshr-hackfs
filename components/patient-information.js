@@ -187,6 +187,12 @@ export function PatientInformation({
 
   return (
     <Container size="sm" className={classes.wrapper}>
+
+      <div className={classes.controls} style={{paddingBottom:'20px'}}>
+        <Button className={classes.control} size="lg" onClick={SellNFT}>
+          Sell Your Anonymized Data on NFT Marketplace
+        </Button>
+      </div>
       <Accordion
         iconPosition="right"
         classNames={{
@@ -217,11 +223,6 @@ export function PatientInformation({
         vitalSigns={vitalSigns}
       />
 
-      <div className={classes.controls}>
-        <Button className={classes.control} size="lg" onClick={SellNFT}>
-          Sell Data
-        </Button>
-      </div>
     </Container>
   );
 }
