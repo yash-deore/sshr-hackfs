@@ -297,22 +297,22 @@ export function PatientMedicalInformation({
 }) {
   if(!vitalSigns){vitalSigns = {}}
     if(!vitalSigns.weight){
-        vitalSigns.weight = "Not Provided"
+        vitalSigns.weight = "NA"
     }
     if(!vitalSigns.height){
-        vitalSigns.height = "Not Provided"
+        vitalSigns.height = "NA"
     }
     if(!vitalSigns.temperature){
-        vitalSigns.temperature = "Not Provided"
+        vitalSigns.temperature = "NA"
     }
     if(!vitalSigns.respiratoryRate){
-        vitalSigns.respiratoryRate = "Not Provided"
+        vitalSigns.respiratoryRate = "NA"
     }
     if(!vitalSigns.heartRate){
-        vitalSigns.heartRate = "Not Provided"
+        vitalSigns.heartRate = "NA"
     }
     if(!vitalSigns.bloodPressure){
-        vitalSigns.bloodPressure = "Not Provided"
+        vitalSigns.bloodPressure = "NA"
     }
     const {
     weight,
