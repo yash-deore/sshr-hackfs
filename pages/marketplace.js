@@ -40,12 +40,18 @@ export default function Home() {
     let chainId = await ethereum.request({ method: "eth_chainId" });
     let chainIdString = parseInt(chainId).toString();
     setChainId(chainIdString);
-    //console.log('chainId', chainIdString);
+    console.log('chainId', chainIdString);
 
+    if(!networkMapping[chainIdString]){
+      debugger
+      console.error("no networkMapping for chain "+chainIdString, {
+        networkMapping
+      })
+    }
     const marketplaceAddress =
       networkMapping[chainIdString].HealthNFTMarketplace[0];
     setMarketplaceAddress(marketplaceAddress);
-    //console.log('Marketplace Address:', marketplaceAddress);
+    console.log('Marketplace Address:', marketplaceAddress);
 
     let nftContractAddress = networkMapping[chainIdString].HealthDataNFT[0];
     setNftContractAddress(nftContractAddress);
