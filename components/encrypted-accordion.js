@@ -1,6 +1,6 @@
 import { Container, Title, Accordion, createStyles } from "@mantine/core";
 import { ButtonCopy } from "./copy-to-clipboard";
-import {convertEncryptedStreamIdToShareUrl} from "../functions/convertEncryptedStreamIdToShareUrl"
+import { convertEncryptedStreamIdToShareUrl } from "../functions/convertEncryptedStreamIdToShareUrl";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const control = getRef("control");
@@ -52,7 +52,7 @@ export function EncryptedAccordion({ encryptedStreamId }) {
 
   function linkShare() {
     if (encryptedStreamId.length > 0) {
-      const shareUrl = convertEncryptedStreamIdToShareUrl(encryptedStreamId)
+      const shareUrl = convertEncryptedStreamIdToShareUrl(encryptedStreamId);
       return (
         <Accordion.Item label="Share Link">
           Share this link. You do not have to worry about this link going public

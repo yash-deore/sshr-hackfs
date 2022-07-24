@@ -6,12 +6,9 @@ import { DecryptedResponse } from "./decrypted-response";
 import { DecryptedAccordianDisplay } from "./decrypted-accordion";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { AlertCircle, Check } from "tabler-icons-react";
-import {API_URL, CHAIN} from "../constants"
+import { API_URL, CHAIN } from "../constants";
 
-let litCeramicIntegration = new Integration(
-    API_URL,
-  CHAIN
-);
+let litCeramicIntegration = new Integration(API_URL, CHAIN);
 
 export default function StreamDecrypt() {
   const [decryptedResponse, setDecryptedResponse] = useState("");

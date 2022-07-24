@@ -157,7 +157,9 @@ function RespiratoryRate({ respiratoryRate }) {
             Respiratory Rate
           </Text>
           <Text weight={700} size="xl">
-            {respiratoryRate === 0 || respiratoryRate === undefined || respiratoryRate === "NA"
+            {respiratoryRate === 0 ||
+            respiratoryRate === undefined ||
+            respiratoryRate === "NA"
               ? "NA"
               : respiratoryRate + " per min"}
           </Text>
@@ -173,15 +175,18 @@ function BloodPressure({ bloodPressure }) {
     pos = "NA";
   else pos = bloodPressure.position;
 
-    if(!bloodPressure.measurement || typeof bloodPressure.measurement === "string"){
-        console.error("No bloodPressure.measurement.  Got: ", {
-            bloodPressure
-        })
-      if(typeof bloodPressure === "string"){
-        bloodPressure = {};
-      }
-        bloodPressure.measurement = {}
+  if (
+    !bloodPressure.measurement ||
+    typeof bloodPressure.measurement === "string"
+  ) {
+    console.error("No bloodPressure.measurement.  Got: ", {
+      bloodPressure,
+    });
+    if (typeof bloodPressure === "string") {
+      bloodPressure = {};
     }
+    bloodPressure.measurement = {};
+  }
 
   if (
     bloodPressure.measurement.systolic === undefined ||
@@ -295,26 +300,28 @@ export function PatientMedicalInformation({
   progressNotes,
   vitalSigns,
 }) {
-  if(!vitalSigns){vitalSigns = {}}
-    if(!vitalSigns.weight){
-        vitalSigns.weight = "NA"
-    }
-    if(!vitalSigns.height){
-        vitalSigns.height = "NA"
-    }
-    if(!vitalSigns.temperature){
-        vitalSigns.temperature = "NA"
-    }
-    if(!vitalSigns.respiratoryRate){
-        vitalSigns.respiratoryRate = "NA"
-    }
-    if(!vitalSigns.heartRate){
-        vitalSigns.heartRate = "NA"
-    }
-    if(!vitalSigns.bloodPressure){
-        vitalSigns.bloodPressure = "NA"
-    }
-    const {
+  if (!vitalSigns) {
+    vitalSigns = {};
+  }
+  if (!vitalSigns.weight) {
+    vitalSigns.weight = "NA";
+  }
+  if (!vitalSigns.height) {
+    vitalSigns.height = "NA";
+  }
+  if (!vitalSigns.temperature) {
+    vitalSigns.temperature = "NA";
+  }
+  if (!vitalSigns.respiratoryRate) {
+    vitalSigns.respiratoryRate = "NA";
+  }
+  if (!vitalSigns.heartRate) {
+    vitalSigns.heartRate = "NA";
+  }
+  if (!vitalSigns.bloodPressure) {
+    vitalSigns.bloodPressure = "NA";
+  }
+  const {
     weight,
     height,
     temperature,

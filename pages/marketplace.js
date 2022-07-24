@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useGlobalContext } from "../global/store";
 import { useQuery, gql } from "@apollo/client";
 import { ethers } from "ethers";
 import axios from "axios";
@@ -10,6 +12,9 @@ import GET_ACTIVE_ITEMS from "../constants/subgraphQueries";
 import NFTBox from "../components/NFTBox";
 
 export default function Home() {
+  const router = useRouter();
+  const [globalStore, setGlobalStore] = useGlobalContext();
+  const { authenticated, patientShares } = globalStore;
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState("not-loaded");
   const [chainId, setChainId] = useState("");
@@ -22,7 +27,9 @@ export default function Home() {
   const { loading, error, data: listedNfts } = useQuery(GET_ACTIVE_ITEMS);
 
   useEffect(() => {
-    init();
+    if (authenticated === false)
+      router.push("/profile", null, { shallow: true });
+    else init();
   }, []);
 
   async function init() {
@@ -40,18 +47,18 @@ export default function Home() {
     let chainId = await ethereum.request({ method: "eth_chainId" });
     let chainIdString = parseInt(chainId).toString();
     setChainId(chainIdString);
-    console.log('chainId', chainIdString);
+    console.log("chainId", chainIdString);
 
-    if(!networkMapping[chainIdString]){
-      debugger
-      console.error("no networkMapping for chain "+chainIdString, {
-        networkMapping
-      })
+    if (!networkMapping[chainIdString]) {
+      debugger;
+      console.error("no networkMapping for chain " + chainIdString, {
+        networkMapping,
+      });
     }
     const marketplaceAddress =
       networkMapping[chainIdString].HealthNFTMarketplace[0];
     setMarketplaceAddress(marketplaceAddress);
-    console.log('Marketplace Address:', marketplaceAddress);
+    console.log("Marketplace Address:", marketplaceAddress);
 
     let nftContractAddress = networkMapping[chainIdString].HealthDataNFT[0];
     setNftContractAddress(nftContractAddress);
@@ -65,11 +72,12 @@ export default function Home() {
     if (loading || !listedNfts) {
       return <h1>Loading ...</h1>;
     } else {
+      console.log(listedNfts);
       return listedNfts.activeItems.map((nft, i) => {
-        if (i > 4) {
-          //console.log(nft);
-          const { price, nftAddress, tokenId, seller } = nft;
-          //console.log('Market place NFT Address: ', nftAddress);
+        //console.log(nft);
+        const { price, nftAddress, tokenId, seller } = nft;
+        //console.log('Market place NFT Address: ', nftAddress);
+        if (tokenId > 11) {
           return (
             <div key={i}>
               <NFTBox

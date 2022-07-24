@@ -4,8 +4,8 @@ import { useGlobalContext } from "../global/store";
 import { PatientInformation } from "./patient-information";
 import { NewPatient } from "./new-patient";
 import { authenticateAndGetData } from "../functions/authenticateAndGetData";
-import {showMessenger} from "../functions/showMessenger"
-import {MESSENGER_URL} from "../constants"
+import { showMessenger } from "../functions/showMessenger";
+import { MESSENGER_URL } from "../constants";
 
 const useStyles = createStyles((theme) => ({
   controls: {
@@ -36,8 +36,6 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-
-
 export function CeramicConnect() {
   const { classes } = useStyles();
   const { data } = useAccount();
@@ -47,7 +45,7 @@ export function CeramicConnect() {
   async function connectIdentityCeramic() {
     const authData = await authenticateAndGetData();
     const { authenticate, PBI, PPI, PMI, PSI } = authData;
-    showMessenger(MESSENGER_URL+"/dm/")
+    showMessenger(MESSENGER_URL + "/dm/");
     setGlobalStore({
       authenticated: authenticate,
       patientBasic: PBI,
@@ -75,7 +73,8 @@ export function CeramicConnect() {
           vitalSigns,
         } = patientMedical;
         let completePhoneNumber = phoneNumber;
-        if(countryCode){ // Fix NaN in Phone number
+        if (countryCode) {
+          // Fix NaN in Phone number
           completePhoneNumber = countryCode + " " + phoneNumber;
         }
         const dateConversion = new Date(dateOfBirth);

@@ -8,19 +8,16 @@ import { useAccount } from "wagmi";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { Check, AlertCircle } from "tabler-icons-react";
 
-import {ceramic, aliases, CHAIN, API_URL, MESSENGER_URL} from "../constants"
+import { ceramic, aliases, CHAIN, API_URL, MESSENGER_URL } from "../constants";
 import { useGlobalContext } from "../global/store";
 import { accessControlArray } from "../functions/accessControl";
 import { selectedShareData } from "../functions/selectedShareData";
 import { EncryptedAccordion } from "./encrypted-accordion";
 import { ethers } from "ethers";
-import {convertEncryptedStreamIdToShareUrl} from "../functions/convertEncryptedStreamIdToShareUrl"
-import {showMessenger} from "../functions/showMessenger"
+import { convertEncryptedStreamIdToShareUrl } from "../functions/convertEncryptedStreamIdToShareUrl";
+import { showMessenger } from "../functions/showMessenger";
 
-let litCeramicIntegration = new Integration(
-    API_URL,
-  CHAIN
-);
+let litCeramicIntegration = new Integration(API_URL, CHAIN);
 
 export default function StreamEncrypt() {
   const router = useRouter();
@@ -85,7 +82,6 @@ export default function StreamEncrypt() {
       console.log(encryptedStreamId);
       setEncryptedStreamId(encryptedStreamId);
 
-
       if (encryptedStreamId.startsWith("something"))
         updateNotification({
           id: "load-data-encrypt",
@@ -100,8 +96,14 @@ export default function StreamEncrypt() {
           encryptedStreamId: encryptedStreamId,
           doctorAddress: form.values.address,
         };
-        localStorage.setItem('recipientAddress', form.values.address)
-        showMessenger(MESSENGER_URL+"/dm/"+form.values.address+"?message="+convertEncryptedStreamIdToShareUrl(encryptedStreamId))
+        localStorage.setItem("recipientAddress", form.values.address);
+        showMessenger(
+          MESSENGER_URL +
+            "/dm/" +
+            form.values.address +
+            "?message=" +
+            convertEncryptedStreamIdToShareUrl(encryptedStreamId)
+        );
 
         if (patientShares === null) {
           const firstShare = {

@@ -87,6 +87,7 @@ export default function NFTBox({
   console.log("Params:", nftAddress, tokenId, price);
 
   async function getTokenURI() {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
     const nftContract = new ethers.Contract(nftAddress, nftABI, signer);
 
@@ -120,7 +121,9 @@ export default function NFTBox({
           );
           setImageURI(imageURIURL);
         } else {
-          setImageURI("https://avatars.githubusercontent.com/u/109106474?s=200&v=4")
+          setImageURI(
+            "https://avatars.githubusercontent.com/u/109106474?s=200&v=4"
+          );
         }
       }
 

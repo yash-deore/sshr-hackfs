@@ -25,6 +25,9 @@ import { PatientBasicInformation } from "./patient-basic-information";
 import PatientPersonalInformation from "./patient-personal-information";
 import { PatientMedicalInformation } from "./patient-medical-information";
 
+import { showNotification, updateNotification } from "@mantine/notifications";
+import { AlertCircle, Check } from "tabler-icons-react";
+
 import { useQuery, gql } from "@apollo/client";
 import networkMapping from "../constants/networkMapping.json";
 import { ethers } from "ethers";
@@ -110,6 +113,15 @@ export function PatientInformation({
   const [patientParameters, setPatientParameters] = useState(null);
 
   async function SellNFT() {
+    showNotification({
+      id: "load-data-sell-nft",
+      loading: true,
+      title: "Minting and listing the NFT",
+      message: "Please wait your NFT is being minted and listed.",
+      autoClose: false,
+      disallowClose: true,
+    });
+
     const attributes = {
       gender,
       date,
@@ -183,12 +195,20 @@ export function PatientInformation({
     );
     await tx2.wait(4);
     console.log(`Tx value ${JSON.stringify(tx2)}`);
+
+    updateNotification({
+      id: "load-data-sell-nft",
+      color: "teal",
+      title: "NFT listed.",
+      message: "Your data has been successfully listed on the Marketplace.",
+      icon: <Check />,
+      autoClose: 3000,
+    });
   }
 
   return (
     <Container size="sm" className={classes.wrapper}>
-
-      <div className={classes.controls} style={{paddingBottom:'20px'}}>
+      <div className={classes.controls} style={{ paddingBottom: "20px" }}>
         <Button className={classes.control} size="lg" onClick={SellNFT}>
           Sell Your Anonymized Data on NFT Marketplace
         </Button>
@@ -222,7 +242,6 @@ export function PatientInformation({
         progressNotes={progressNotes}
         vitalSigns={vitalSigns}
       />
-
     </Container>
   );
 }

@@ -1,19 +1,16 @@
 import { useGlobalContext } from "../global/store";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { Button, Container, Paper, Table } from "@mantine/core";
+import { Button, Container, Paper, Table, Title } from "@mantine/core";
 import { Integration } from "lit-ceramic-sdk";
 import { useAccount } from "wagmi";
 import { DIDDataStore } from "@glazed/did-datastore";
-import {ceramic, aliases, CHAIN, API_URL} from "../constants"
+import { ceramic, aliases, CHAIN, API_URL } from "../constants";
 import { auth } from "../functions/authenticate";
 import { showNotification, updateNotification } from "@mantine/notifications";
 import { AlertCircle, Check } from "tabler-icons-react";
 
-let litCeramicIntegration = new Integration(
-  API_URL,
-  CHAIN
-);
+let litCeramicIntegration = new Integration(API_URL, CHAIN);
 
 export default function AccessControlShares() {
   const router = useRouter();
@@ -60,7 +57,9 @@ export default function AccessControlShares() {
       );
 
       const { shares } = patientShares;
-      const newShares = shares.filter((share) => share.encryptedStreamId !== encryptedStreamId);
+      const newShares = shares.filter(
+        (share) => share.encryptedStreamId !== encryptedStreamId
+      );
       const newPatientShares = {
         shares: newShares,
       };
@@ -113,6 +112,9 @@ export default function AccessControlShares() {
 
       return (
         <Container>
+          <Title style={{ margin: "3% 0 1% 0" }} order={2}>
+            Share Logs
+          </Title>
           <Table>
             <thead>
               <tr>

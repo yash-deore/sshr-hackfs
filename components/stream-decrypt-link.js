@@ -5,12 +5,9 @@ import { showNotification, updateNotification } from "@mantine/notifications";
 import { AlertCircle, Check } from "tabler-icons-react";
 import { DecryptedAccordianDisplay } from "./decrypted-accordion";
 import { Accordion, Container, createStyles, Title } from "@mantine/core";
-import {API_URL, CHAIN} from "../constants"
+import { API_URL, CHAIN } from "../constants";
 
-let litCeramicIntegration = new Integration(
-    API_URL,
-    CHAIN
-);
+let litCeramicIntegration = new Integration(API_URL, CHAIN);
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const control = getRef("control");
