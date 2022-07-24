@@ -16,7 +16,7 @@ export async function authenticateAndGetData() {
   if (window.ethereum === null) {
     showNotification({
       color: "red",
-      title: "Authentication falied",
+      title: "Authentication failed",
       message: "Unable to authenticate. Please try again.",
       icon: <AlertCircle />,
       autoClose: 3000,
@@ -76,7 +76,7 @@ export async function authenticateAndGetData() {
     } catch (err) {
       showNotification({
         color: "red",
-        title: "Authentication falied",
+        title: "Authentication failed",
         message: "Unable to authenticate. Please try again.",
         icon: <AlertCircle />,
         autoClose: 3000,
