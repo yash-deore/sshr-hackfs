@@ -126,7 +126,7 @@ function HeartRate({ heartRate }) {
             Heart Rate
           </Text>
           <Text weight={700} size="xl">
-            {heartRate === 0 || heartRate === undefined
+            {heartRate === 0 || heartRate === undefined || heartRate === "NA"
               ? "NA"
               : heartRate + " bpm"}
           </Text>
@@ -157,7 +157,7 @@ function RespiratoryRate({ respiratoryRate }) {
             Respiratory Rate
           </Text>
           <Text weight={700} size="xl">
-            {respiratoryRate === 0 || respiratoryRate === undefined
+            {respiratoryRate === 0 || respiratoryRate === undefined || respiratoryRate === "NA"
               ? "NA"
               : respiratoryRate + " per min"}
           </Text>
