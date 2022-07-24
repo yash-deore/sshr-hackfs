@@ -173,8 +173,13 @@ function BloodPressure({ bloodPressure }) {
     pos = "NA";
   else pos = bloodPressure.position;
 
-    if(!bloodPressure.measurement){
-        console.error("No bloodPressure.measurement", bloodPressure)
+    if(!bloodPressure.measurement || typeof bloodPressure.measurement === "string"){
+        console.error("No bloodPressure.measurement.  Got: ", {
+            bloodPressure
+        })
+      if(typeof bloodPressure === "string"){
+        bloodPressure = {};
+      }
         bloodPressure.measurement = {}
     }
 
@@ -270,7 +275,7 @@ function BloodPressure({ bloodPressure }) {
 }
 
 function ArrayInRichTextEditor({ array }) {
-  if (array.length === 0)
+  if (!array || array.length === 0)
     return <RichTextEditor readOnly value="<strong>None</strong>" />;
 
   let display = "";
