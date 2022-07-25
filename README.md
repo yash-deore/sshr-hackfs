@@ -1,4 +1,4 @@
-# Links
+# Project Information
 
 - **Presentaion**: https://www.canva.com/design/DAFHN2ZXx7I/UWyLYHKkensugSiAGyqBCQ/view?utm_content=DAFHN2ZXx7I&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink
 - **Notion** Document(Contains all the details of the project): https://dolomite-salamander-c57.notion.site/Self-Sovereign-Health-Records-22308790e4a94721be8d942ae2f70173
@@ -53,3 +53,26 @@
 
 - Cerscan : https://cerscan.com/mainnet/stream/k3y52l7qbv1fryoya5ieztbsm2k0ulyh2cyke29eh7uso2p3shx2n96n556vcer5s
 - Tile Explorer : https://tiles.ceramic.community/document/k3y52l7qbv1fryoya5ieztbsm2k0ulyh2cyke29eh7uso2p3shx2n96n556vcer5s
+
+# Smart Contracts
+
+- The NFT Smart contract: https://mumbai.polygonscan.com/address/0x4A92819aD686915be11711bB36706b195e0625ff
+
+- Marketplace Smart Contract: https://mumbai.polygonscan.com/address/0x41C3d7BC580cC9A4b9bca53F4A28eBd4B56605B6
+
+# Subgraph
+
+- HealthDataMarket: https://thegraph.com/hosted-service/subgraph/brahmapsen/healthdatamarket
+
+# Technologies used
+
+- Next Js and Mantine
+- Ceramic Protocol
+- Lit Protocol
+- NFT.storage
+- XMTP
+- Graph Protocol
+- Polygon (testnet)
+- Solidity and OpenZeppelin
+- Ethers Js
+- Rainbow Kit
