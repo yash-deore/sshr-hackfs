@@ -1,7 +1,7 @@
 # Project Information
 
 - **Presentaion**: https://www.canva.com/design/DAFHN2ZXx7I/UWyLYHKkensugSiAGyqBCQ/view?utm_content=DAFHN2ZXx7I&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink
-- **Notion** Document(Contains all the details of the project): https://dolomite-salamander-c57.notion.site/Self-Sovereign-Health-Records-22308790e4a94721be8d942ae2f70173
+- **Notion Document(Contains all the details of the project)** : https://dolomite-salamander-c57.notion.site/Self-Sovereign-Health-Records-22308790e4a94721be8d942ae2f70173
 - **Demo**: https://sshr-hackfs.vercel.app/
 
 # Database layer
